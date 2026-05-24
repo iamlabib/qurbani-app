@@ -36,7 +36,7 @@
 <body class="bg-gradient-to-br from-emerald-50 via-teal-50 to-emerald-100 min-h-screen text-slate-800 flex flex-col justify-between">
 
     <!-- Header -->
-    <header class="bg-white/80 backdrop-blur-md shadow-sm border-b border-emerald-100 sticky top-0 z-50">
+    <header class="bg-white/80 backdrop-blur-md shadow-sm border-b border-emerald-100 sticky top-0 z-40">
         <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="bg-emerald-600 text-white p-2.5 rounded-2xl shadow-md shadow-emerald-200 animate-pulse">
@@ -44,12 +44,21 @@
                 </div>
                 <div>
                     <h1 class="text-xl md:text-2xl font-bold text-emerald-800 leading-tight">পশু ওজন পরিমাপক</h1>
-                    <p class="text-xs md:text-sm text-emerald-600 font-medium">ফিতা দিয়ে মেপে সহজে লাইভ ওজন হিসাব করুন</p>
+                    <p class="text-xs md:text-sm text-emerald-600 font-medium">ফিতা দিয়ে মেপে সহজে লাইভ ওজন হিসাব করুন</p>
                 </div>
             </div>
-            <div class="bg-emerald-100/70 border border-emerald-200/50 px-3 py-1.5 rounded-full text-xs text-emerald-800 font-semibold hidden sm:flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                শতভাগ নির্ভুল গাণিতিক সূত্র
+            
+            <div class="flex items-center gap-4">
+                <div class="bg-emerald-100/70 border border-emerald-200/50 px-3 py-1.5 rounded-full text-xs text-emerald-800 font-semibold hidden sm:flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    শতভাগ নির্ভুল গাণিতিক সূত্র
+                </div>
+                
+                <!-- Settings Button -->
+                <button onclick="openSettingsModal()" class="bg-white border border-emerald-200 text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800 px-3 py-2 rounded-xl text-sm font-bold shadow-sm transition-all flex items-center gap-2 active:scale-95">
+                    <i class="fa-solid fa-gear"></i>
+                    <span class="hidden sm:inline">সেটিংস</span>
+                </button>
             </div>
         </div>
     </header>
@@ -87,21 +96,28 @@
 
                 <!-- Measurement Units Selection -->
                 <div class="mb-6">
-                    <label class="block text-emerald-900 font-bold text-lg mb-3 text-center md:text-left">২. পরিমাপের একক নির্ধারণ করুন</label>
-                    <div class="bg-slate-100 p-1.5 rounded-xl flex">
-                        <button id="unitCm" onclick="changeUnit('cm')" class="flex-1 py-2 text-sm md:text-base font-bold rounded-lg transition-all text-white bg-emerald-600 shadow-md">সেন্টিমিটার (cm)</button>
-                        <button id="unitInch" onclick="changeUnit('inch')" class="flex-1 py-2 text-sm md:text-base font-bold rounded-lg transition-all text-slate-600 hover:text-emerald-800">ইঞ্চি (inch)</button>
-                        <button id="unitFeet" onclick="changeUnit('feet')" class="flex-1 py-2 text-sm md:text-base font-bold rounded-lg transition-all text-slate-600 hover:text-emerald-800">ফুট (feet)</button>
+                    <div class="flex justify-between items-center mb-3">
+                        <label class="block text-emerald-900 font-bold text-lg text-center md:text-left">২. পরিমাপের একক নির্ধারণ করুন</label>
                     </div>
-                    <p class="text-xs text-emerald-600 mt-2 text-center md:text-left">💡 একক পরিবর্তন করলে পূর্বের তথ্যগুলো স্বয়ংক্রিয়ভাবে পরিবর্তিত হবে।</p>
+                    
+                    <div class="bg-slate-100 p-1.5 rounded-xl flex flex-wrap gap-1.5">
+                        <button id="unitCm" onclick="changeUnit('cm')" class="flex-1 py-2 px-1 min-w-[80px] text-sm md:text-base font-bold rounded-lg transition-all text-white bg-emerald-600 shadow-md">সেমি (cm)</button>
+                        <button id="unitInch" onclick="changeUnit('inch')" class="flex-1 py-2 px-1 min-w-[80px] text-sm md:text-base font-bold rounded-lg transition-all text-slate-600 hover:text-emerald-800 hover:bg-white">ইঞ্চি (inch)</button>
+                        <button id="unitFeet" onclick="changeUnit('feet')" class="flex-1 py-2 px-1 min-w-[80px] text-sm md:text-base font-bold rounded-lg transition-all text-slate-600 hover:text-emerald-800 hover:bg-white">ফুট (feet)</button>
+                        <!-- Dynamic Hand Measure Tab (Hidden by default until configured) -->
+                        <button id="unitHand" onclick="changeUnit('hand')" class="hidden py-2 px-1 min-w-[80px] text-sm md:text-base font-bold rounded-lg transition-all text-slate-600 hover:text-emerald-800 hover:bg-white bg-amber-100/50 border border-amber-200 relative overflow-hidden group">
+                            <span class="relative z-10 text-amber-900"><i class="fa-solid fa-hand-sparkles mr-1 text-amber-600"></i>হাতের মাপে</span>
+                        </button>
+                    </div>
+                    <p class="text-xs text-emerald-600 mt-2 text-center md:text-left">💡 একক পরিবর্তন করলে পূর্বের তথ্যগুলো স্বয়ংক্রিয়ভাবে পরিবর্তিত হবে।</p>
                 </div>
 
                 <hr class="border-dashed border-emerald-100 my-6">
 
-                <!-- Input Fields -->
-                <div class="space-y-5">
-                    <label class="block text-emerald-900 font-bold text-lg">৩. সঠিক মাপ দিন</label>
-                    
+                <label class="block text-emerald-900 font-bold text-lg mb-4">৩. সঠিক মাপ দিন</label>
+                
+                <!-- Standard Input Fields (cm, inch, feet) -->
+                <div class="space-y-5" id="standardInputs">
                     <!-- Heart Girth Input -->
                     <div>
                         <div class="flex justify-between items-center mb-1.5">
@@ -128,10 +144,59 @@
                             <span class="text-xs bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded-md" id="lengthUnitLabel">সেন্টিমিটার</span>
                         </div>
                         <div class="relative">
-                            <input type="number" step="any" id="inputLength" oninput="clearErrors()" placeholder="কাঁধ থেকে লেজের গোড়া পর্যন্ত..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 pr-12 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all">
+                            <input type="number" step="any" id="inputLength" oninput="clearErrors()" placeholder="কাঁধ থেকে লেজের গোড়া পর্যন্ত..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 pr-12 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all">
                             <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold" id="lengthUnitSymbol">cm</span>
                         </div>
                         <p id="errorLength" class="text-red-500 text-sm font-semibold mt-1 hidden"></p>
+                    </div>
+                </div>
+
+                <!-- Hand Based Input Fields (Hidden by default) -->
+                <div class="space-y-5 hidden" id="handInputs">
+                    <!-- Hand Girth Input -->
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label class="font-semibold text-slate-700 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                                বুকের পরিধি (কত হাত, কত ইঞ্চি)
+                            </label>
+                            <!-- Live Preview Badge for Hand Measurement -->
+                            <span id="previewGirthHand" class="text-[11px] sm:text-xs bg-indigo-100 text-indigo-800 border border-indigo-200 font-bold px-2 py-0.5 rounded-md hidden shadow-sm transition-all"></span>
+                        </div>
+                        <div class="flex gap-2 sm:gap-4">
+                            <div class="relative flex-1">
+                                <input type="number" id="inputGirthHand" oninput="clearErrors(); updateHandPreviews();" placeholder="কত হাত" class="w-full bg-amber-50 border border-amber-200 rounded-xl px-3 sm:px-4 py-3.5 pr-10 sm:pr-12 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all">
+                                <span class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-amber-700/60 font-bold text-sm sm:text-base">হাত</span>
+                            </div>
+                            <div class="relative flex-1">
+                                <input type="number" step="any" id="inputGirthHandInch" oninput="clearErrors(); updateHandPreviews();" placeholder="কত ইঞ্চি" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 sm:px-4 py-3.5 pr-12 sm:pr-14 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all">
+                                <span class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm sm:text-base">ইঞ্চি</span>
+                            </div>
+                        </div>
+                        <p id="errorGirthHand" class="text-red-500 text-sm font-semibold mt-1 hidden"></p>
+                    </div>
+
+                    <!-- Hand Length Input -->
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label class="font-semibold text-slate-700 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                শরীরের দৈর্ঘ্য (কত হাত, কত ইঞ্চি)
+                            </label>
+                            <!-- Live Preview Badge for Hand Measurement -->
+                            <span id="previewLengthHand" class="text-[11px] sm:text-xs bg-indigo-100 text-indigo-800 border border-indigo-200 font-bold px-2 py-0.5 rounded-md hidden shadow-sm transition-all"></span>
+                        </div>
+                        <div class="flex gap-2 sm:gap-4">
+                            <div class="relative flex-1">
+                                <input type="number" id="inputLengthHand" oninput="clearErrors(); updateHandPreviews();" placeholder="কত হাত" class="w-full bg-amber-50 border border-amber-200 rounded-xl px-3 sm:px-4 py-3.5 pr-10 sm:pr-12 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white transition-all">
+                                <span class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-amber-700/60 font-bold text-sm sm:text-base">হাত</span>
+                            </div>
+                            <div class="relative flex-1">
+                                <input type="number" step="any" id="inputLengthHandInch" oninput="clearErrors(); updateHandPreviews();" placeholder="কত ইঞ্চি" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 sm:px-4 py-3.5 pr-12 sm:pr-14 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all">
+                                <span class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm sm:text-base">ইঞ্চি</span>
+                            </div>
+                        </div>
+                        <p id="errorLengthHand" class="text-red-500 text-sm font-semibold mt-1 hidden"></p>
                     </div>
                 </div>
 
@@ -156,26 +221,21 @@
                 <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl shadow-emerald-950/5 border border-white/60 p-6">
                     <h3 class="text-emerald-900 font-bold text-lg mb-4 flex items-center gap-2">
                         <i class="fa-solid fa-magnifying-glass-chart text-emerald-600"></i>
-                        মেপে নেওয়ার সঠিক নিয়মচিত্র
+                        মেপে নেওয়ার সঠিক নিয়মচিত্র
                     </h3>
                     
                     <div class="bg-emerald-50/50 rounded-2xl p-4 border border-emerald-100 flex items-center justify-center min-h-[220px]">
                         <!-- Real Hereford Bull Image Guide -->
                         <div id="cowSvgContainer" class="w-full relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-emerald-200/50 bg-slate-100">
-                            <!-- USDA Hereford Bull Side View Direct Image link from Wikimedia -->
                             <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Hereford_bull_large.jpg" 
                                  alt="ষাঁড় পরিমাপ নির্দেশিকা" 
-                                 class="w-full h-full object-cover opacity-95" 
+                                 class="w-full h-full object-cover opacity-95"
                                  onerror="loadFallbackImage(this, 'cow')">
                             
-                            <!-- Overlaid indicators -->
                             <div class="absolute inset-0 bg-black/15"></div>
                             <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 300">
-                                <!-- Heart Girth (Red Line) -->
-                                <ellipse cx="140" cy="155" rx="16" ry="60" fill="none" stroke="#ef4444" stroke-width="4.5" stroke-dasharray="8,5" />
-                                <text x="140" y="235" fill="#ffffff" font-weight="900" font-size="13" text-anchor="middle" class="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">বুকের পরিধি</text>
-                                
-                                <!-- Body Length (Blue Line) -->
+                                <ellipse cx="165" cy="165" rx="16" ry="65" fill="none" stroke="#ef4444" stroke-width="4.5" stroke-dasharray="8,5" />
+                                <text x="165" y="245" fill="#ffffff" font-weight="900" font-size="13" text-anchor="middle" class="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">বুকের পরিধি</text>
                                 <g>
                                     <line x1="110" y1="110" x2="315" y2="110" stroke="#2563eb" stroke-width="4.5" stroke-dasharray="8,5" />
                                     <polygon points="110,110 122,104 122,116" fill="#2563eb" />
@@ -187,20 +247,15 @@
 
                         <!-- Real White Goat Image Guide -->
                         <div id="goatSvgContainer" class="w-full relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-emerald-200/50 bg-slate-100 hidden">
-                            <!-- Standard Domestic White Goat Image link from Wikimedia -->
                             <img src="https://upload.wikimedia.org/wikipedia/commons/b/b2/Hausziege_04.jpg" 
                                  alt="ছাগল পরিমাপ নির্দেশিকা" 
-                                 class="w-full h-full object-cover opacity-95" 
+                                 class="w-full h-full object-cover opacity-95"
                                  onerror="loadFallbackImage(this, 'goat')">
                             
-                            <!-- Overlaid indicators -->
                             <div class="absolute inset-0 bg-black/20"></div>
                             <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 300">
-                                <!-- Heart Girth (Red Line) -->
-                                <ellipse cx="150" cy="150" rx="14" ry="50" fill="none" stroke="#ef4444" stroke-width="4.5" stroke-dasharray="8,5" />
-                                <text x="150" y="220" fill="#ffffff" font-weight="900" font-size="13" text-anchor="middle" class="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">বুকের পরিধি</text>
-                                
-                                <!-- Body Length (Blue Line) -->
+                                <ellipse cx="180" cy="160" rx="14" ry="55" fill="none" stroke="#ef4444" stroke-width="4.5" stroke-dasharray="8,5" />
+                                <text x="180" y="230" fill="#ffffff" font-weight="900" font-size="13" text-anchor="middle" class="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">বুকের পরিধি</text>
                                 <g>
                                     <line x1="120" y1="115" x2="280" y2="115" stroke="#2563eb" stroke-width="4.5" stroke-dasharray="8,5" />
                                     <polygon points="120,115 132,109 132,121" fill="#2563eb" />
@@ -212,9 +267,9 @@
                     </div>
                 </div>
 
-                <!-- Accurate Measuring Instructions (Collapsible Tips) -->
+                <!-- Accurate Measuring Instructions -->
                 <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl shadow-emerald-950/5 border border-white/60 overflow-hidden">
-                    <button onclick="toggleTips()" class="w-full text-left p-6 flex justify-between items-center bg-gradient-to-r from-emerald-500/5 to-transparent">
+                    <button onclick="toggleTips()" class="w-full text-left p-6 flex justify-between items-center bg-gradient-to-r from-emerald-500/5 to-transparent hover:bg-emerald-50/50 transition-colors">
                         <span class="text-emerald-900 font-bold text-lg flex items-center gap-2">
                             <i class="fa-solid fa-circle-info text-emerald-600"></i>
                             কিভাবে সঠিক পরিমাপ নিবেন?
@@ -225,17 +280,21 @@
                     <div id="tipsContent" class="px-6 pb-6 space-y-3.5 text-sm md:text-base text-slate-600 hidden">
                         <div class="flex gap-3 items-start">
                             <span class="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-xs mt-0.5">১</span>
-                            <p><strong class="text-emerald-900">সমতল স্থান:</strong> পরিমাপ নেওয়ার সময় পশুটিকে অবশ্যই সমতল ও সোজা জায়গায় দাঁড় করাতে হবে।</p>
+                            <p><strong class="text-emerald-900">সমতল স্থান:</strong> পরিমাপ নেওয়ার সময় পশুটিকে অবশ্যই সমতল ও সোজা জায়গায় দাঁড় করাতে হবে।</p>
                         </div>
                         <div class="flex gap-3 items-start">
                             <span class="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-xs mt-0.5">২</span>
-                            <p><strong class="text-emerald-900">বুকের পরিধি:</strong> সামনের দুই পায়ের ঠিক পিছন দিয়ে ফিতা নিয়ে বুকের চারপাশ পেঁচিয়ে পরিধি বা বেষ্টনী মেপে নিন। ফিতা বেশি টাইট বা ঢিলা করবেন না।</p>
+                            <p><strong class="text-emerald-900">বুকের পরিধি:</strong> সামনের দুই পায়ের ঠিক পিছন দিয়ে ফিতা নিয়ে বুকের চারপাশ পেঁচিয়ে পরিধি বা বেষ্টনী মেপে নিন। ফিতা বেশি টাইট বা ঢিলা করবেন মহাশয়।</p>
                         </div>
                         <div class="flex gap-3 items-start">
                             <span class="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-xs mt-0.5">৩</span>
-                            <p><strong class="text-emerald-900">শরীরের দৈর্ঘ্য:</strong> পশুর কাঁধের হাড় বা জয়েন্ট (Point of shoulder) থেকে শুরু করে নিতম্বের শেষ হাড় বা লেজের গোড়া (Pin bone) পর্যন্ত সোজা মেপে নিন।</p>
+                            <p><strong class="text-emerald-900">শরীরের দৈর্ঘ্য:</strong> পশুর কাঁধের হাড় বা জয়েন্ট থেকে শুরু করে নিতম্বের শেষ হাড় বা লেজের গোড়া পর্যন্ত সোজা মেপে নিন।</p>
                         </div>
-                        <div class="bg-amber-50 border border-amber-100 p-3 rounded-xl text-amber-800 text-xs flex gap-2">
+                        <div class="flex gap-3 items-start">
+                            <span class="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-xs mt-0.5">৪</span>
+                            <p><strong class="text-emerald-900">হাতের মাপে:</strong> উপরের সেটিংস (<i class="fa-solid fa-gear"></i>) অপশন থেকে আপনার এক হাতের দৈর্ঘ্য ইঞ্চিতে সেভ করে নিলে, ফিতার বদলে হাত দিয়ে মেপেও সহজে ওজন বের করতে পারবেন।</p>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-100 p-3 rounded-xl text-amber-800 text-xs flex gap-2 mt-2">
                             <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5 flex-shrink-0 text-base"></i>
                             <span><strong>সতর্কতা:</strong> এটি একটি বৈজ্ঞানিক ও জ্যামিতিক আনুমানিক হিসাব। পশুর গর্ভধারণ, চর্বির আধিক্য অথবা বিশেষ জাতের ক্ষেত্রে ওজন কিছুটা কম-বেশি হতে পারে।</span>
                         </div>
@@ -245,52 +304,50 @@
             </div>
         </div>
 
-        <!-- Live Result Display (Renders Dynamically below) -->
+        <!-- Live Result Display -->
         <div id="resultCard" class="mt-8 bg-gradient-to-b from-emerald-800 to-emerald-950 text-white rounded-3xl shadow-xl shadow-emerald-950/20 p-6 md:p-8 hidden opacity-0 transition-all duration-500 scale-95 max-w-4xl mx-auto border border-emerald-700/30">
             <div class="text-center mb-6">
-                <span class="bg-emerald-500/20 text-emerald-300 font-bold px-4 py-1.5 rounded-full text-xs md:text-sm uppercase tracking-wider border border-emerald-500/20 inline-block">হিসাব সম্পন্ন হয়েছে</span>
+                <span class="bg-emerald-500/20 text-emerald-300 font-bold px-4 py-1.5 rounded-full text-xs md:text-sm uppercase tracking-wider border border-emerald-500/20 inline-block">হিসাব সম্পন্ন হয়েছে</span>
                 <h3 class="text-2xl md:text-3xl font-black mt-2 text-emerald-100">আনুমানিক লাইভ ওজন</h3>
             </div>
 
             <!-- Echo Input measurements -->
             <div class="bg-emerald-900/50 border border-emerald-800/60 rounded-2xl py-3 px-4 mb-6 text-center text-emerald-200 text-sm md:text-base font-semibold">
                 প্রদত্ত মাপ ➔ 
-                <span id="echoGirth">বুকের পরিধি: --</span> | 
-                <span id="echoLength">শরীরের দৈর্ঘ্য: --</span>
+                <span id="echoGirth" class="text-white">বুকের পরিধি: --</span> | 
+                <span id="echoLength" class="text-white">শরীরের দৈর্ঘ্য: --</span>
             </div>
 
             <!-- Primary Metric Display -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center mb-6">
-                <!-- Main weight in KG -->
                 <div class="bg-white/5 backdrop-blur border border-white/10 p-6 rounded-2xl text-center md:col-span-1">
                     <p class="text-emerald-300 text-sm font-semibold mb-1">কেজিতে ওজন</p>
                     <p class="text-3xl md:text-4xl font-extrabold text-white" id="resKg">-- কেজি</p>
                 </div>
                 
-                <!-- Weight in Mond (মণ) -->
-                <div class="bg-white/5 backdrop-blur border border-white/10 p-6 rounded-2xl text-center md:col-span-1">
-                    <p class="text-emerald-300 text-sm font-semibold mb-1">মণে ওজন (১ মণ = ৩৭.৩২ কেজি)</p>
-                    <p class="text-3xl md:text-4xl font-extrabold text-yellow-300" id="resMond">-- মণ</p>
+                <div class="bg-white/5 backdrop-blur border border-white/10 p-6 rounded-2xl text-center md:col-span-1 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-yellow-500/10 animate-pulse"></div>
+                    <p class="text-emerald-300 text-sm font-semibold mb-1 relative">মণে ওজন</p>
+                    <p class="text-3xl md:text-4xl font-extrabold text-yellow-300 relative" id="resMond">-- মণ</p>
+                    <p class="text-[10px] text-emerald-400 mt-1 relative">(১ মণ = ৩৭.৩২ কেজি)</p>
                 </div>
 
-                <!-- Weight in Pounds -->
                 <div class="bg-white/5 backdrop-blur border border-white/10 p-6 rounded-2xl text-center md:col-span-1">
                     <p class="text-emerald-300 text-sm font-semibold mb-1">পাউন্ডে ওজন (Lbs)</p>
                     <p class="text-2xl md:text-3xl font-extrabold text-emerald-200" id="resLbs">-- পাউন্ড</p>
                 </div>
             </div>
 
-            <!-- NEW SECTION: Eatable Meat & Price Estimation (৯০০ টাকা/কেজি) -->
+            <!-- Eatable Meat & Price Estimation (৯০০ টাকা/কেজি) -->
             <div class="bg-gradient-to-r from-amber-500/15 via-emerald-500/10 to-amber-500/15 border border-amber-500/30 rounded-2xl p-5 mb-6 shadow-lg">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Total Eatable Yield -->
                     <div class="flex items-center gap-4">
                         <div class="bg-amber-500 text-slate-950 p-3.5 rounded-2xl shadow-md flex items-center justify-center">
                             <i class="fa-solid fa-drumstick-bite text-2xl"></i>
                         </div>
                         <div>
                             <p class="text-amber-300 text-xs md:text-sm font-bold flex items-center gap-1.5">
-                                মোট খাওয়ার উপযোগী অংশ (আনুমানিক)
+                                মোট খাওয়ার উপযোগী অংশ
                                 <span class="bg-amber-400/20 text-amber-200 text-[10px] px-1.5 py-0.5 rounded" id="eatablePercentageLabel">৪৫%</span>
                             </p>
                             <p class="text-2xl md:text-3xl font-black text-white" id="resEatableKg">-- কেজি</p>
@@ -298,15 +355,14 @@
                         </div>
                     </div>
                     
-                    <!-- Market Value Yield at 900 TK/KG -->
                     <div class="flex items-center gap-4 border-t md:border-t-0 md:border-l border-emerald-800/60 pt-4 md:pt-0 md:pl-6">
                         <div class="bg-emerald-500 text-slate-950 p-3.5 rounded-2xl shadow-md flex items-center justify-center">
                             <i class="fa-solid fa-sack-dollar text-2xl"></i>
                         </div>
                         <div>
-                            <p class="text-emerald-300 text-xs md:text-sm font-bold">৯০০ টাকা/কেজি দরে আনুমানিক মূল্য</p>
-                            <p class="text-2xl md:text-3xl font-black text-yellow-300" id="resTotalPrice">৳ -- টাকা</p>
-                            <p class="text-[11px] text-emerald-300/80 leading-tight mt-0.5">বর্তমান বাজারমূল্য অনুযায়ী আনুমানিক হিসাব</p>
+                            <p class="text-emerald-300 text-xs md:text-sm font-bold"><span id="dynamicPriceLabel">৯০০</span> টাকা/কেজি দরে আনুমানিক মূল্য</p>
+                            <p class="text-2xl md:text-3xl font-black text-yellow-300" id="resTotalPrice">৳ --</p>
+                            <p class="text-[11px] text-emerald-300/80 leading-tight mt-0.5">বর্তমান বাজারমূল্য অনুযায়ী হিসাব</p>
                         </div>
                     </div>
                 </div>
@@ -316,10 +372,9 @@
             <div class="bg-emerald-900/40 border border-emerald-800/60 rounded-2xl p-5 mb-6">
                 <h4 class="text-yellow-400 font-bold text-lg mb-4 flex items-center gap-2">
                     <i class="fa-solid fa-chart-pie"></i>
-                    মাংসের বিস্তারিত আনুমানিক পরিমাণ (Estimated Meat Weight)
+                    মাংসের বিস্তারিত আনুমানিক পরিমাণ
                 </h4>
                 
-                <!-- Meat breakdown table -->
                 <div class="divide-y divide-emerald-800/40 text-sm md:text-base">
                     <div class="flex justify-between py-2.5">
                         <span class="text-slate-200 font-semibold">কার্কাস ওজন (Carcass Weight)</span>
@@ -328,28 +383,28 @@
                     <div class="flex justify-between py-2.5">
                         <span class="text-slate-200 font-semibold flex items-center gap-2">
                             <span class="w-3 h-3 rounded bg-emerald-500 inline-block"></span>
-                            নিট মাংস / হাড়বিহীন (Net Boneless Meat)
+                            নিট মাংস / হাড়বিহীন
                         </span>
                         <span class="text-emerald-300 font-extrabold" id="resNetMeat">-- কেজি</span>
                     </div>
                     <div class="flex justify-between py-2.5">
                         <span class="text-slate-200 font-semibold flex items-center gap-2">
                             <span class="w-3 h-3 rounded bg-amber-600 inline-block"></span>
-                            হাড় (Bone)
+                            হাড় (Bone)
                         </span>
                         <span class="text-white font-extrabold" id="resBone">-- কেজি</span>
                     </div>
                     <div class="flex justify-between py-2.5">
                         <span class="text-slate-200 font-semibold flex items-center gap-2">
                             <span class="w-3 h-3 rounded bg-orange-500 inline-block"></span>
-                            ভুঁড়ি / নাড়িভুঁড়ি (Offal & Organs)
+                            ভুঁড়ি / নাড়িভুঁড়ি
                         </span>
                         <span class="text-white font-extrabold" id="resOffal">-- কেজি</span>
                     </div>
                     <div class="flex justify-between py-2.5">
                         <span class="text-slate-200 font-semibold flex items-center gap-2">
                             <span class="w-3 h-3 rounded bg-slate-400 inline-block"></span>
-                            চামড়া ও বর্জ্য (Skin & Waste)
+                            চামড়া ও বর্জ্য
                         </span>
                         <span class="text-white font-extrabold" id="resSkin">-- কেজি</span>
                     </div>
@@ -357,36 +412,19 @@
 
                 <!-- Visual Stacked Bar -->
                 <div class="mt-6">
-                    <p class="text-xs text-emerald-300 font-bold mb-2">অনুপাত চিত্র (Visual Breakdown Bar):</p>
                     <div class="flex h-4 overflow-hidden rounded-full bg-emerald-950/80 border border-emerald-800/40">
-                        <div id="barNetMeat" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500 transition-all duration-1000" style="width: 0%"></div>
-                        <div id="barBone" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-amber-600 transition-all duration-1000" style="width: 0%"></div>
-                        <div id="barOffal" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-orange-500 transition-all duration-1000" style="width: 0%"></div>
-                        <div id="barSkin" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-slate-400 transition-all duration-1000" style="width: 0%"></div>
+                        <div id="barNetMeat" class="bg-emerald-500 transition-all duration-1000" style="width: 0%"></div>
+                        <div id="barBone" class="bg-amber-600 transition-all duration-1000" style="width: 0%"></div>
+                        <div id="barOffal" class="bg-orange-500 transition-all duration-1000" style="width: 0%"></div>
+                        <div id="barSkin" class="bg-slate-400 transition-all duration-1000" style="width: 0%"></div>
                     </div>
                     <div class="flex flex-wrap gap-x-4 gap-y-2 mt-3 text-xs text-slate-300">
-                        <span class="flex items-center gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded bg-emerald-500 inline-block"></span>
-                            নিট মাংস (<span id="pctNetMeat">০%</span>)
-                        </span>
-                        <span class="flex items-center gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded bg-amber-600 inline-block"></span>
-                            হাড় (<span id="pctBone">০%</span>)
-                        </span>
-                        <span class="flex items-center gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded bg-orange-500 inline-block"></span>
-                            ভুঁড়ি (<span id="pctOffal">০%</span>)
-                        </span>
-                        <span class="flex items-center gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded bg-slate-400 inline-block"></span>
-                            চামড়া ও বর্জ্য (<span id="pctSkin">০%</span>)
-                        </span>
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-emerald-500 inline-block"></span>নিট মাংস (<span id="pctNetMeat">০%</span>)</span>
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-amber-600 inline-block"></span>হাড় (<span id="pctBone">০%</span>)</span>
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-orange-500 inline-block"></span>ভুঁড়ি (<span id="pctOffal">০%</span>)</span>
+                        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-slate-400 inline-block"></span>চামড়া ও বর্জ্য (<span id="pctSkin">০%</span>)</span>
                     </div>
                 </div>
-
-                <p class="text-[11px] text-emerald-400/80 mt-4 leading-relaxed italic">
-                    * এটি একটি আনুমানিক হিসাব। প্রকৃত মাংসের পরিমাণ পশুর বয়স, জাত ও শারীরিক অবস্থার উপর নির্ভর করে।
-                </p>
             </div>
 
             <!-- Weight Category & Visual Meter -->
@@ -399,26 +437,25 @@
                 <!-- Custom Range Meter -->
                 <div class="relative pt-4 pb-2">
                     <div class="flex h-3 mb-4 overflow-hidden text-xs bg-emerald-950 rounded-full">
-                        <div class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-amber-400 w-[30%] border-r border-emerald-900/40"></div>
-                        <div class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500 w-[40%] border-r border-emerald-900/40"></div>
-                        <div class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500 w-[30%]"></div>
+                        <div class="bg-amber-400 w-[30%] border-r border-emerald-900/40"></div>
+                        <div class="bg-emerald-500 w-[40%] border-r border-emerald-900/40"></div>
+                        <div class="bg-red-500 w-[30%]"></div>
                     </div>
                     
-                    <!-- Dynamic Pin Marker on Progress Slider -->
                     <div id="weightMarker" class="absolute top-[10px] left-[0%] transition-all duration-1000 -translate-x-1/2 flex flex-col items-center">
                         <i class="fa-solid fa-location-pin text-yellow-300 text-xl filter drop-shadow"></i>
                     </div>
 
-                    <div class="flex justify-between text-xs font-bold text-emerald-300/80">
+                    <div class="flex justify-between text-xs font-bold text-emerald-300/80 mt-1">
                         <span>ছোট (Small)</span>
                         <span>মাঝারি (Medium)</span>
-                        <span>বড় (Large)</span>
+                        <span>বড় (Large)</span>
                     </div>
                 </div>
             </div>
-
+            
             <div class="mt-6 text-center text-xs text-emerald-400/80">
-                ⚠️ পরিমাপকৃত ওজন আনুমানিক। মাংসের প্রকৃত ওজন পশুর জাত ও হাড়ের ওজনের ওপর ভিত্তি করে প্রায় ৫৫% থেকে ৬৫% পর্যন্ত হয়ে থাকে।
+                ⚠️ পরিমাপকৃত ওজন আনুমানিক। প্রকৃত ওজন পশুর জাত ও শারীরিক গঠনের ওপর নির্ভর করে কিছুটা কম-বেশি হতে পারে।
             </div>
         </div>
     </main>
@@ -431,11 +468,67 @@
         </div>
     </footer>
 
+    <!-- Settings Modal Wrapper (Hidden by default) -->
+    <div id="settingsModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 p-4">
+        <!-- Modal Content -->
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md transform scale-95 transition-transform duration-300" id="settingsModalContent">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center p-5 border-b border-emerald-100 bg-emerald-50/50 rounded-t-3xl">
+                <h3 class="text-xl font-bold text-emerald-900 flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-emerald-600"></i> সেটিংস
+                </h3>
+                <button onclick="closeSettingsModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-red-100 hover:text-red-600 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6">
+                <div class="mb-4">
+                    <label class="block text-slate-700 font-bold mb-2">আপনার এক হাতের দৈর্ঘ্য লিখুন</label>
+                    <p class="text-xs text-slate-500 mb-4">ফিতার বদলে হাত দিয়ে মাপার জন্য আপনার এক হাতের (কনুই থেকে আঙুলের ডগা পর্যন্ত) দৈর্ঘ্য ইঞ্চিতে সেভ করুন। সাধারণত এটি ১৮ ইঞ্চির কাছাকাছি হয়।</p>
+                    
+                    <div class="relative">
+                        <input type="number" step="any" id="handLengthInput" placeholder="যেমন: 18" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 pr-16 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all text-emerald-900">
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-600 font-bold bg-emerald-100 px-2 py-1 rounded-md text-sm">ইঞ্চি</span>
+                    </div>
+                    <p id="errorHandLength" class="text-red-500 text-sm font-semibold mt-2 hidden"></p>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-slate-700 font-bold mb-2">মাংসের বাজারমূল্য (প্রতি কেজি)</label>
+                    <p class="text-xs text-slate-500 mb-4">মোট মাংসের আনুমানিক দাম হিসাব করার জন্য প্রতি কেজি মাংসের বর্তমান বাজারমূল্য লিখুন।</p>
+                    
+                    <div class="relative">
+                        <input type="number" step="any" id="meatPriceInput" placeholder="যেমন: 900" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 pr-16 text-lg font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all text-emerald-900">
+                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-600 font-bold bg-emerald-100 px-2 py-1 rounded-md text-sm">টাকা</span>
+                    </div>
+                    <p id="errorMeatPrice" class="text-red-500 text-sm font-semibold mt-2 hidden"></p>
+                </div>
+                
+                <div class="bg-amber-50 rounded-xl p-3 text-xs text-amber-800 border border-amber-100 flex gap-2">
+                    <i class="fa-solid fa-lightbulb text-amber-500 mt-0.5"></i>
+                    <span>হাতের মাপ সেভ করলে, মূল স্ক্রিনে পরিমাপের এককে <strong>"হাতের মাপে"</strong> নামক একটি নতুন অপশন চালু হবে।</span>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="p-5 border-t border-emerald-100 bg-slate-50 rounded-b-3xl flex justify-end gap-3">
+                <button onclick="closeSettingsModal()" class="px-5 py-2.5 rounded-xl font-bold text-slate-600 hover:bg-slate-200 transition-colors">বাতিল</button>
+                <button onclick="saveSettings()" class="px-6 py-2.5 rounded-xl font-bold text-white bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-600/20 transition-all active:scale-95 flex items-center gap-2">
+                    <i class="fa-solid fa-floppy-disk"></i> সেভ করুন
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Sound and logic controls (Embedded JS) -->
     <script>
         // System variables & states
         let selectedAnimalType = 'cow'; // default is cow
         let currentUnit = 'cm'; // default unit is cm
+        let handLengthInches = null; // Stores user configured hand length in inches
+        let meatPricePerKg = 900; // Stores user configured meat price per KG
 
         // Translation tables for numbers
         const banglaDigits = {
@@ -453,7 +546,9 @@
         function formatBanglaNumber(value, decimals = 2) {
             if (isNaN(value) || value === null) return '';
             const roundedVal = Number(value).toFixed(decimals);
-            return convertToBanglaNumerals(roundedVal);
+            // remove trailing zeros if any (like .00) for cleaner look on whole numbers
+            const strVal = parseFloat(roundedVal).toString();
+            return convertToBanglaNumerals(strVal);
         }
 
         // Format price with English-style thousands separator, then map to Bengali numerals
@@ -469,6 +564,102 @@
                 imgElement.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='100%' height='100%' fill='%23e2e8f0'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%23475569'>ষাঁড় পরিমাপ নির্দেশিকা (সচিত্র)</text></svg>";
             } else {
                 imgElement.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='100%' height='100%' fill='%23e2e8f0'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%23475569'>ছাগল পরিমাপ নির্দেশিকা (সচিত্র)</text></svg>";
+            }
+        }
+
+        // Settings Modal Handlers
+        function openSettingsModal() {
+            const modal = document.getElementById('settingsModal');
+            const content = document.getElementById('settingsModalContent');
+            
+            // Prefill if already set
+            if(handLengthInches !== null) {
+                document.getElementById('handLengthInput').value = handLengthInches;
+            } else {
+                document.getElementById('handLengthInput').value = '';
+            }
+            
+            // Prefill meat price
+            document.getElementById('meatPriceInput').value = meatPricePerKg;
+            
+            document.getElementById('errorHandLength').classList.add('hidden');
+            document.getElementById('errorMeatPrice').classList.add('hidden');
+            
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            content.classList.remove('scale-95');
+            content.classList.add('scale-100');
+        }
+
+        function closeSettingsModal() {
+            const modal = document.getElementById('settingsModal');
+            const content = document.getElementById('settingsModalContent');
+            
+            content.classList.remove('scale-100');
+            content.classList.add('scale-95');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function saveSettings() {
+            const handInputVal = document.getElementById('handLengthInput').value;
+            const errHandLabel = document.getElementById('errorHandLength');
+            let parsedHand = parseFloat(handInputVal);
+            let isHandValid = true;
+            
+            // Validate Hand Length
+            if (handInputVal.trim() !== '') {
+                if(isNaN(parsedHand) || parsedHand <= 5 || parsedHand >= 40) {
+                    errHandLabel.textContent = "দয়া করে সঠিক মাপ দিন (যেমন: ১৫ - ২৫ এর মধ্যে)";
+                    errHandLabel.classList.remove('hidden');
+                    isHandValid = false;
+                } else {
+                    errHandLabel.classList.add('hidden');
+                }
+            } else {
+                errHandLabel.classList.add('hidden');
+            }
+
+            // Validate Meat Price
+            const priceInputVal = document.getElementById('meatPriceInput').value;
+            const errPriceLabel = document.getElementById('errorMeatPrice');
+            let parsedPrice = parseFloat(priceInputVal);
+            let isPriceValid = true;
+
+            if (priceInputVal.trim() !== '') {
+                if (isNaN(parsedPrice) || parsedPrice <= 0) {
+                    errPriceLabel.textContent = "দয়া করে সঠিক মূল্য দিন";
+                    errPriceLabel.classList.remove('hidden');
+                    isPriceValid = false;
+                } else {
+                    errPriceLabel.classList.add('hidden');
+                }
+            } else {
+                errPriceLabel.classList.add('hidden');
+            }
+
+            if (!isHandValid || !isPriceValid) return;
+
+            // Save variables
+            if (handInputVal.trim() !== '') handLengthInches = parsedHand;
+            if (priceInputVal.trim() !== '') meatPricePerKg = parsedPrice;
+            
+            // Update Dynamic Price Label
+            document.getElementById('dynamicPriceLabel').textContent = convertToBanglaNumerals(meatPricePerKg);
+            
+            // Unhide the Hand measure tab and adjust layout
+            if (handLengthInches !== null) {
+                const handTab = document.getElementById('unitHand');
+                handTab.classList.remove('hidden');
+                handTab.classList.add('flex-1');
+            }
+            
+            closeSettingsModal();
+            
+            // If already on Hand tab or result is visible, recalculate
+            if(currentUnit === 'hand') {
+                updateHandPreviews();
+            }
+            if(!document.getElementById('resultCard').classList.contains('hidden')) {
+                calculateWeight();
             }
         }
 
@@ -500,10 +691,44 @@
             }
             
             // Re-calculate live if values are set to ensure instant category/range update
-            const girthInput = document.getElementById('inputGirth').value;
-            const lengthInput = document.getElementById('inputLength').value;
-            if (girthInput && lengthInput) {
+            const hasData = getGirthInCm() > 0 && getLengthInCm() > 0;
+            if (hasData && !document.getElementById('resultCard').classList.contains('hidden')) {
                 calculateWeight();
+            }
+        }
+
+        // Core function to read current Girth based on active unit, returning base CM
+        function getGirthInCm() {
+            if (currentUnit === 'hand') {
+                let h = parseFloat(document.getElementById('inputGirthHand').value) || 0;
+                let i = parseFloat(document.getElementById('inputGirthHandInch').value) || 0;
+                if (h === 0 && i === 0) return NaN;
+                // Total inches = hands * length + extra inches
+                let totalInches = (h * handLengthInches) + i;
+                return totalInches * 2.54;
+            } else {
+                let val = parseFloat(document.getElementById('inputGirth').value);
+                if (isNaN(val)) return NaN;
+                if (currentUnit === 'inch') return val * 2.54;
+                if (currentUnit === 'feet') return val * 30.48;
+                return val; // native cm
+            }
+        }
+
+        // Core function to read current Length based on active unit, returning base CM
+        function getLengthInCm() {
+            if (currentUnit === 'hand') {
+                let h = parseFloat(document.getElementById('inputLengthHand').value) || 0;
+                let i = parseFloat(document.getElementById('inputLengthHandInch').value) || 0;
+                if (h === 0 && i === 0) return NaN;
+                let totalInches = (h * handLengthInches) + i;
+                return totalInches * 2.54;
+            } else {
+                let val = parseFloat(document.getElementById('inputLength').value);
+                if (isNaN(val)) return NaN;
+                if (currentUnit === 'inch') return val * 2.54;
+                if (currentUnit === 'feet') return val * 30.48;
+                return val; // native cm
             }
         }
 
@@ -511,60 +736,86 @@
         function changeUnit(newUnit) {
             if (currentUnit === newUnit) return;
 
-            const girthInput = document.getElementById('inputGirth');
-            const lengthInput = document.getElementById('inputLength');
-            
-            let girthVal = parseFloat(girthInput.value);
-            let lengthVal = parseFloat(lengthInput.value);
+            // 1. Capture exact current state in base Metric (CM)
+            let baseGirthCm = getGirthInCm();
+            let baseLengthCm = getLengthInCm();
 
-            // 1. Convert any current values to the absolute cm scale (base metric)
-            if (!isNaN(girthVal)) {
-                let girthInCm = girthVal;
-                if (currentUnit === 'inch') girthInCm = girthVal * 2.54;
-                else if (currentUnit === 'feet') girthInCm = girthVal * 30.48;
-
-                // 2. Project base cm to the target unit
-                if (newUnit === 'cm') girthInput.value = girthInCm.toFixed(1);
-                else if (newUnit === 'inch') girthInput.value = (girthInCm / 2.54).toFixed(1);
-                else if (newUnit === 'feet') girthInput.value = (girthInCm / 30.48).toFixed(2);
-            }
-
-            if (!isNaN(lengthVal)) {
-                let lengthInCm = lengthVal;
-                if (currentUnit === 'inch') lengthInCm = lengthVal * 2.54;
-                else if (currentUnit === 'feet') lengthInCm = lengthVal * 30.48;
-
-                if (newUnit === 'cm') lengthInput.value = lengthInCm.toFixed(1);
-                else if (newUnit === 'inch') lengthInput.value = (lengthInCm / 2.54).toFixed(1);
-                else if (newUnit === 'feet') lengthInput.value = (lengthInCm / 30.48).toFixed(2);
-            }
-
-            // Update UI components state triggers
+            // 2. Change state
             currentUnit = newUnit;
 
-            // Update UI texts & labels dynamically
+            // 3. Update active UI tabs & Blocks
             const unitCmBtn = document.getElementById('unitCm');
             const unitInchBtn = document.getElementById('unitInch');
             const unitFeetBtn = document.getElementById('unitFeet');
+            const unitHandBtn = document.getElementById('unitHand');
+            
+            const stdInputs = document.getElementById('standardInputs');
+            const hndInputs = document.getElementById('handInputs');
 
             // Reset buttons visual state
             [unitCmBtn, unitInchBtn, unitFeetBtn].forEach(btn => {
-                btn.className = "flex-1 py-2 text-sm md:text-base font-bold rounded-lg transition-all text-slate-600 hover:text-emerald-800";
+                btn.className = "flex-1 py-2 px-1 min-w-[80px] text-sm md:text-base font-bold rounded-lg transition-all text-slate-600 hover:text-emerald-800 hover:bg-white";
             });
+            unitHandBtn.className = "flex-1 py-2 px-1 min-w-[80px] text-sm md:text-base font-bold rounded-lg transition-all text-slate-600 hover:text-emerald-800 hover:bg-white bg-amber-100/50 border border-amber-200 relative overflow-hidden group";
 
-            // Set active button
-            if (newUnit === 'cm') {
-                unitCmBtn.className = "flex-1 py-2 text-sm md:text-base font-bold rounded-lg transition-all text-white bg-emerald-600 shadow-md";
-                updateLabels("সেন্টিমিটার", "cm");
-            } else if (newUnit === 'inch') {
-                unitInchBtn.className = "flex-1 py-2 text-sm md:text-base font-bold rounded-lg transition-all text-white bg-emerald-600 shadow-md";
-                updateLabels("ইঞ্চি", "inch");
-            } else if (newUnit === 'feet') {
-                unitFeetBtn.className = "flex-1 py-2 text-sm md:text-base font-bold rounded-lg transition-all text-white bg-emerald-600 shadow-md";
-                updateLabels("ফুট", "feet");
+            // Determine which Input Block to show
+            if(newUnit === 'hand') {
+                stdInputs.classList.add('hidden');
+                hndInputs.classList.remove('hidden');
+                unitHandBtn.className = "flex-1 py-2 px-1 min-w-[80px] text-sm md:text-base font-bold rounded-lg transition-all text-amber-900 bg-amber-400 border border-amber-500 shadow-md relative overflow-hidden";
+            } else {
+                hndInputs.classList.add('hidden');
+                stdInputs.classList.remove('hidden');
+                
+                if (newUnit === 'cm') {
+                    unitCmBtn.className = "flex-1 py-2 px-1 min-w-[80px] text-sm md:text-base font-bold rounded-lg transition-all text-white bg-emerald-600 shadow-md";
+                    updateLabels("সেন্টিমিটার", "cm");
+                } else if (newUnit === 'inch') {
+                    unitInchBtn.className = "flex-1 py-2 px-1 min-w-[80px] text-sm md:text-base font-bold rounded-lg transition-all text-white bg-emerald-600 shadow-md";
+                    updateLabels("ইঞ্চি", "inch");
+                } else if (newUnit === 'feet') {
+                    unitFeetBtn.className = "flex-1 py-2 px-1 min-w-[80px] text-sm md:text-base font-bold rounded-lg transition-all text-white bg-emerald-600 shadow-md";
+                    updateLabels("ফুট", "feet");
+                }
             }
 
-            // If a valid output is visible, run computation immediately for updated visual outputs in chosen unit
+            // 4. Translate base CM back into newly active input fields
+            if (!isNaN(baseGirthCm) && baseGirthCm > 0) {
+                if(newUnit === 'hand') {
+                    let totalInches = baseGirthCm / 2.54;
+                    let h = Math.floor(totalInches / handLengthInches);
+                    let i = totalInches % handLengthInches;
+                    document.getElementById('inputGirthHand').value = h > 0 ? h : '';
+                    document.getElementById('inputGirthHandInch').value = i > 0 ? parseFloat(i.toFixed(1)) : '';
+                } else {
+                    let dispVal = baseGirthCm;
+                    if(newUnit === 'inch') dispVal = baseGirthCm / 2.54;
+                    if(newUnit === 'feet') dispVal = baseGirthCm / 30.48;
+                    document.getElementById('inputGirth').value = dispVal.toFixed(newUnit==='feet'?2:1);
+                }
+            }
+
+            if (!isNaN(baseLengthCm) && baseLengthCm > 0) {
+                if(newUnit === 'hand') {
+                    let totalInches = baseLengthCm / 2.54;
+                    let h = Math.floor(totalInches / handLengthInches);
+                    let i = totalInches % handLengthInches;
+                    document.getElementById('inputLengthHand').value = h > 0 ? h : '';
+                    document.getElementById('inputLengthHandInch').value = i > 0 ? parseFloat(i.toFixed(1)) : '';
+                } else {
+                    let dispVal = baseLengthCm;
+                    if(newUnit === 'inch') dispVal = baseLengthCm / 2.54;
+                    if(newUnit === 'feet') dispVal = baseLengthCm / 30.48;
+                    document.getElementById('inputLength').value = dispVal.toFixed(newUnit==='feet'?2:1);
+                }
+            }
+            
+            // Updates preview logic instantly when changing unit
+            if(newUnit === 'hand') {
+                updateHandPreviews();
+            }
+
+            // 5. Update results if visible
             const resCard = document.getElementById('resultCard');
             if (!resCard.classList.contains('hidden')) {
                 calculateWeight();
@@ -577,6 +828,53 @@
             document.getElementById('lengthUnitLabel').textContent = label;
             document.getElementById('girthUnitSymbol').textContent = symbol;
             document.getElementById('lengthUnitSymbol').textContent = symbol;
+        }
+
+        // Update the visual live feet/inch preview for the Hand Unit fields
+        function updateHandPreviews() {
+            if (handLengthInches === null) return;
+
+            // For Girth
+            let gh = parseFloat(document.getElementById('inputGirthHand').value) || 0;
+            let gi = parseFloat(document.getElementById('inputGirthHandInch').value) || 0;
+            let totalGirthInches = (gh * handLengthInches) + gi;
+            const previewGirth = document.getElementById('previewGirthHand');
+            
+            if (totalGirthInches > 0) {
+                let feet = Math.floor(totalGirthInches / 12);
+                let inches = totalGirthInches % 12;
+                let text = "";
+                if (feet > 0) text += `${formatBanglaNumber(feet, 0)} ফুট `;
+                if (inches > 0 || feet === 0) {
+                    let inchStr = inches % 1 === 0 ? formatBanglaNumber(inches, 0) : formatBanglaNumber(inches, 1);
+                    text += `${inchStr} ইঞ্চি`;
+                }
+                previewGirth.textContent = `সমান: ${text}`;
+                previewGirth.classList.remove('hidden');
+            } else {
+                previewGirth.classList.add('hidden');
+            }
+
+            // For Length
+            let lh = parseFloat(document.getElementById('inputLengthHand').value) || 0;
+            let li = parseFloat(document.getElementById('inputLengthHandInch').value) || 0;
+            let totalLengthInches = (lh * handLengthInches) + li;
+            const previewLength = document.getElementById('previewLengthHand');
+            
+            if (totalLengthInches > 0) {
+                let feet = Math.floor(totalLengthInches / 12);
+                let inches = totalLengthInches % 12;
+                let text = "";
+                if (feet > 0) text += `${formatBanglaNumber(feet, 0)} ফুট `;
+                if (inches > 0 || feet === 0) {
+                    let inchStr = inches % 1 === 0 ? formatBanglaNumber(inches, 0) : formatBanglaNumber(inches, 1);
+                    text += `${inchStr} ইঞ্চি`;
+                }
+                previewLength.textContent = `সমান: ${text}`;
+                previewLength.classList.remove('hidden');
+            } else {
+                previewLength.classList.add('hidden');
+            }
         }
 
         // Collapsible informational tips panel toggle
@@ -594,16 +892,25 @@
 
         // Clear dynamic display errors on input focus change
         function clearErrors() {
-            const errG = document.getElementById('errorGirth');
-            const errL = document.getElementById('errorLength');
-            errG.classList.add('hidden');
-            errL.classList.add('hidden');
+            document.getElementById('errorGirth').classList.add('hidden');
+            document.getElementById('errorLength').classList.add('hidden');
+            document.getElementById('errorGirthHand').classList.add('hidden');
+            document.getElementById('errorLengthHand').classList.add('hidden');
         }
 
         // Reset the form controls and dynamic components smoothly
         function resetCalculator() {
             document.getElementById('inputGirth').value = '';
             document.getElementById('inputLength').value = '';
+            document.getElementById('inputGirthHand').value = '';
+            document.getElementById('inputGirthHandInch').value = '';
+            document.getElementById('inputLengthHand').value = '';
+            document.getElementById('inputLengthHandInch').value = '';
+            
+            // Hide custom previews
+            document.getElementById('previewGirthHand').classList.add('hidden');
+            document.getElementById('previewLengthHand').classList.add('hidden');
+            
             clearErrors();
             
             const resCard = document.getElementById('resultCard');
@@ -613,87 +920,88 @@
             }, 300);
         }
 
+        // Helper function to format boundary limits dynamically
+        function formatLimitString(minCm, maxCm) {
+            if (currentUnit === 'cm') {
+                return `(${formatBanglaNumber(minCm, 0)} - ${formatBanglaNumber(maxCm, 0)} সেমি)`;
+            } else if (currentUnit === 'inch') {
+                return `(${formatBanglaNumber(minCm / 2.54, 1)} - ${formatBanglaNumber(maxCm / 2.54, 1)} ইঞ্চি)`;
+            } else if (currentUnit === 'feet') {
+                return `(${formatBanglaNumber(minCm / 30.48, 2)} - ${formatBanglaNumber(maxCm / 30.48, 2)} ফুট)`;
+            } else if (currentUnit === 'hand') {
+                let minInches = minCm / 2.54;
+                let minHand = Math.floor(minInches / handLengthInches);
+                let minRemInch = minInches % handLengthInches;
+                let minStr = minHand > 0 ? `${formatBanglaNumber(minHand, 0)} হাত` : '';
+                if(minRemInch > 0) minStr += ` ${formatBanglaNumber(minRemInch, 1)} ইঞ্চি`;
+
+                let maxInches = maxCm / 2.54;
+                let maxHand = Math.floor(maxInches / handLengthInches);
+                let maxRemInch = maxInches % handLengthInches;
+                let maxStr = maxHand > 0 ? `${formatBanglaNumber(maxHand, 0)} হাত` : '';
+                if(maxRemInch > 0) maxStr += ` ${formatBanglaNumber(maxRemInch, 1)} ইঞ্চি`;
+
+                return `(প্রায় ${minStr.trim()} থেকে ${maxStr.trim()})`;
+            }
+        }
+
         // Weight Estimation core functionality
         function calculateWeight() {
-            const girthInput = document.getElementById('inputGirth');
-            const lengthInput = document.getElementById('inputLength');
-            
-            const errGirth = document.getElementById('errorGirth');
-            const errLength = document.getElementById('errorLength');
-
             clearErrors();
-
-            let rawGirth = parseFloat(girthInput.value);
-            let rawLength = parseFloat(lengthInput.value);
+            
+            let girthCm = getGirthInCm();
+            let lengthCm = getLengthInCm();
 
             let hasErrors = false;
-
-            // Empty check validation
-            if (isNaN(rawGirth)) {
-                errGirth.textContent = "মাপ দিতে ভুলবেন না";
-                errGirth.classList.remove('hidden');
-                hasErrors = true;
-            } else if (rawGirth <= 0) {
-                errGirth.textContent = "সঠিক মাপ দিন";
-                errGirth.classList.remove('hidden');
+            
+            // Validation dynamically routing error messages to correct active block
+            if (isNaN(girthCm) || girthCm <= 0) {
+                let errG = currentUnit === 'hand' ? document.getElementById('errorGirthHand') : document.getElementById('errorGirth');
+                errG.textContent = "বুকের সঠিক মাপ দিন";
+                errG.classList.remove('hidden');
                 hasErrors = true;
             }
-
-            if (isNaN(rawLength)) {
-                errLength.textContent = "মাপ দিতে ভুলবেন না";
-                errLength.classList.remove('hidden');
-                hasErrors = true;
-            } else if (rawLength <= 0) {
-                errLength.textContent = "সঠিক মাপ দিন";
-                errLength.classList.remove('hidden');
+            if (isNaN(lengthCm) || lengthCm <= 0) {
+                let errL = currentUnit === 'hand' ? document.getElementById('errorLengthHand') : document.getElementById('errorLength');
+                errL.textContent = "শরীরের সঠিক দৈর্ঘ্য দিন";
+                errL.classList.remove('hidden');
                 hasErrors = true;
             }
 
             if (hasErrors) return;
 
-            // Absolute base conversions internally to metric scale (cm)
-            let girthCm = rawGirth;
-            let lengthCm = rawLength;
-
-            if (currentUnit === 'inch') {
-                girthCm = rawGirth * 2.54;
-                lengthCm = rawLength * 2.54;
-            } else if (currentUnit === 'feet') {
-                girthCm = rawGirth * 30.48;
-                lengthCm = rawLength * 30.48;
-            }
-
-            // Realistic bounds check limits (to prevent garbage computations)
+            // Realistic bounds check limits
             let realistic = true;
+            let errG = currentUnit === 'hand' ? document.getElementById('errorGirthHand') : document.getElementById('errorGirth');
+            let errL = currentUnit === 'hand' ? document.getElementById('errorLengthHand') : document.getElementById('errorLength');
+            
             if (selectedAnimalType === 'cow') {
-                // Cow limit range rules
                 if (girthCm < 70 || girthCm > 320) {
-                    errGirth.textContent = "মাপটি সীমার বাইরে, আবার চেক করুন (৭০ - ৩২০ সেমি)";
-                    errGirth.classList.remove('hidden');
+                    errG.textContent = `মাপটি সীমার বাইরে ${formatLimitString(70, 320)}`;
+                    errG.classList.remove('hidden');
                     realistic = false;
                 }
                 if (lengthCm < 60 || lengthCm > 260) {
-                    errLength.textContent = "মাপটি সীমার বাইরে, আবার চেক করুন (৬০ - ২৬০ সেমি)";
-                    errLength.classList.remove('hidden');
+                    errL.textContent = `মাপটি সীমার বাইরে ${formatLimitString(60, 260)}`;
+                    errL.classList.remove('hidden');
                     realistic = false;
                 }
-            } else {
-                // Goat limit range rules
+            } else { // Goat
                 if (girthCm < 25 || girthCm > 140) {
-                    errGirth.textContent = "মাপটি সীমার বাইরে, আবার চেক করুন (২৫ - ১৪০ সেমি)";
-                    errGirth.classList.remove('hidden');
+                    errG.textContent = `মাপটি সীমার বাইরে ${formatLimitString(25, 140)}`;
+                    errG.classList.remove('hidden');
                     realistic = false;
                 }
                 if (lengthCm < 20 || lengthCm > 120) {
-                    errLength.textContent = "মাপটি সীমার বাইরে, আবার চেক করুন (২০ - ১২০ সেমি)";
-                    errLength.classList.remove('hidden');
+                    errL.textContent = `মাপটি সীমার বাইরে ${formatLimitString(20, 120)}`;
+                    errL.classList.remove('hidden');
                     realistic = false;
                 }
             }
 
             if (!realistic) return;
 
-            // Running internal scientific livestock equation
+            // Running internal scientific livestock equation (Shaeffer's Formula modified for metric)
             let weightKg = 0;
             if (selectedAnimalType === 'cow') {
                 weightKg = (Math.pow(girthCm, 2) * lengthCm) / 10840;
@@ -705,32 +1013,14 @@
             const weightMond = weightKg / 37.32;
             const weightLbs = weightKg * 2.205;
 
-            // 1. New calculations: Total Eatable portion & Market Price (900 Taka per KG)
-            let eatablePercentage = 0;
-            let eatableKg = 0;
-            
-            if (selectedAnimalType === 'cow') {
-                // Cow eatable yield (Meat + edible organs) is approximately 45% of total live weight
-                eatablePercentage = 45;
-                eatableKg = weightKg * 0.45;
-            } else {
-                // Goat eatable yield is approximately 42% of total live weight
-                eatablePercentage = 42;
-                eatableKg = weightKg * 0.42;
-            }
-            const approxPrice = eatableKg * 900;
+            // Calculate Total Eatable portion & Market Price (Dynamic Taka per KG)
+            let eatablePercentage = selectedAnimalType === 'cow' ? 45 : 42;
+            let eatableKg = weightKg * (eatablePercentage / 100);
+            const approxPrice = eatableKg * meatPricePerKg;
 
             // Meat Estimation detailed calculations
-            let carcassWeight = 0;
-            let netMeatWeight = 0;
-            let boneWeight = 0;
-            let offalWeight = 0;
-            let skinWeight = 0;
-
-            let pctNetMeatVal = 0;
-            let pctBoneVal = 0;
-            let pctOffalVal = 0;
-            let pctSkinVal = 0;
+            let carcassWeight = 0, netMeatWeight = 0, boneWeight = 0, offalWeight = 0, skinWeight = 0;
+            let pctNetMeatVal = 0, pctBoneVal = 0, pctOffalVal = 0, pctSkinVal = 0;
 
             if (selectedAnimalType === 'cow') {
                 carcassWeight = weightKg * 0.55;
@@ -738,22 +1028,14 @@
                 boneWeight = weightKg * 0.13;
                 offalWeight = weightKg * 0.09;
                 skinWeight = weightKg * 0.22;
-
-                pctNetMeatVal = 40;
-                pctBoneVal = 13;
-                pctOffalVal = 9;
-                pctSkinVal = 22;
+                pctNetMeatVal = 40; pctBoneVal = 13; pctOffalVal = 9; pctSkinVal = 22;
             } else { // Goat
                 carcassWeight = weightKg * 0.50;
                 netMeatWeight = weightKg * 0.38;
                 boneWeight = weightKg * 0.09;
                 offalWeight = weightKg * 0.08;
                 skinWeight = weightKg * 0.20;
-
-                pctNetMeatVal = 38;
-                pctBoneVal = 9;
-                pctOffalVal = 8;
-                pctSkinVal = 20;
+                pctNetMeatVal = 38; pctBoneVal = 9; pctOffalVal = 8; pctSkinVal = 20;
             }
 
             // Health Status categorization thresholds
@@ -763,15 +1045,12 @@
             if (selectedAnimalType === 'cow') {
                 if (weightKg < 150) {
                     category = "ছোট (Small)";
-                    // Maps 0-150 kg onto range 0% - 30% of bar width
                     percentPosition = (weightKg / 150) * 30;
                 } else if (weightKg <= 300) {
                     category = "মাঝারি (Medium)";
-                    // Maps 150-300 kg onto range 30% - 70% of bar width
                     percentPosition = 30 + ((weightKg - 150) / 150) * 40;
                 } else {
-                    category = "বড় (Large)";
-                    // Maps 300-500 kg onto range 70% - 100% of bar width
+                    category = "বড় (Large)";
                     percentPosition = 70 + ((weightKg - 300) / 200) * 30;
                 }
             } else { // Goat thresholds
@@ -782,23 +1061,45 @@
                     category = "মাঝারি (Medium)";
                     percentPosition = 30 + ((weightKg - 15) / 20) * 40;
                 } else {
-                    category = "বড় (Large)";
+                    category = "বড় (Large)";
                     percentPosition = 70 + ((weightKg - 35) / 35) * 30;
                 }
             }
 
-            // Cap marker placement within absolute boundaries [0, 96%] to prevent sliding out of bounds
+            // Cap marker placement within absolute boundaries [2, 96%] to prevent sliding out of bounds
             percentPosition = Math.min(Math.max(percentPosition, 2), 96);
 
-            // Display unit conversions string back to user
-            let unitText = "";
-            if (currentUnit === 'cm') unitText = "সেন্টিমিটার";
-            else if (currentUnit === 'inch') unitText = "ইঞ্চি";
-            else if (currentUnit === 'feet') unitText = "ফুট";
+            // Construct display unit strings dynamically based on selected modality
+            let echoGirthText = "";
+            let echoLengthText = "";
 
-            // Push processed measurements into active DOM
-            document.getElementById('echoGirth').textContent = `বুকের পরিধি: ${formatBanglaNumber(rawGirth, 1)} ${unitText}`;
-            document.getElementById('echoLength').textContent = `শরীরের দৈর্ঘ্য: ${formatBanglaNumber(rawLength, 1)} ${unitText}`;
+            if (currentUnit === 'hand') {
+                let gh = parseFloat(document.getElementById('inputGirthHand').value) || 0;
+                let gi = parseFloat(document.getElementById('inputGirthHandInch').value) || 0;
+                let lh = parseFloat(document.getElementById('inputLengthHand').value) || 0;
+                let li = parseFloat(document.getElementById('inputLengthHandInch').value) || 0;
+                
+                let gStr = [];
+                if(gh>0) gStr.push(`${formatBanglaNumber(gh, 0)} হাত`);
+                if(gi>0) gStr.push(`${formatBanglaNumber(gi, 1)} ইঞ্চি`);
+                echoGirthText = `বুকের পরিধি: ${gStr.join(' ')}`;
+
+                let lStr = [];
+                if(lh>0) lStr.push(`${formatBanglaNumber(lh, 0)} হাত`);
+                if(li>0) lStr.push(`${formatBanglaNumber(li, 1)} ইঞ্চি`);
+                echoLengthText = `শরীরের দৈর্ঘ্য: ${lStr.join(' ')}`;
+                
+            } else {
+                let unitText = currentUnit === 'cm' ? "সেন্টিমিটার" : (currentUnit === 'inch' ? "ইঞ্চি" : "ফুট");
+                let rawGirth = parseFloat(document.getElementById('inputGirth').value);
+                let rawLength = parseFloat(document.getElementById('inputLength').value);
+                echoGirthText = `বুকের পরিধি: ${formatBanglaNumber(rawGirth, 1)} ${unitText}`;
+                echoLengthText = `শরীরের দৈর্ঘ্য: ${formatBanglaNumber(rawLength, 1)} ${unitText}`;
+            }
+
+            // Push processed strings into active DOM
+            document.getElementById('echoGirth').textContent = echoGirthText;
+            document.getElementById('echoLength').textContent = echoLengthText;
 
             document.getElementById('resKg').textContent = `${formatBanglaNumber(weightKg, 2)} কেজি`;
             document.getElementById('resMond').textContent = `${formatBanglaNumber(weightMond, 2)} মণ`;
@@ -808,7 +1109,7 @@
             // Push Eatable Meat and Price to active DOM
             document.getElementById('eatablePercentageLabel').textContent = `${convertToBanglaNumerals(eatablePercentage)}%`;
             document.getElementById('resEatableKg').textContent = `${formatBanglaNumber(eatableKg, 2)} কেজি`;
-            document.getElementById('resTotalPrice').textContent = `৳ ${formatBanglaPrice(approxPrice)} টাকা`;
+            document.getElementById('resTotalPrice').textContent = `৳ ${formatBanglaPrice(approxPrice)}`;
 
             // Meat Weight DOM elements update
             document.getElementById('resCarcass').textContent = `${formatBanglaNumber(carcassWeight, 2)} কেজি`;
@@ -823,7 +1124,7 @@
             document.getElementById('barOffal').style.width = `${pctOffalVal}%`;
             document.getElementById('barSkin').style.width = `${pctSkinVal}%`;
 
-            // Add text percentages to legend in Bengali
+            // Add text percentages to legend
             document.getElementById('pctNetMeat').textContent = `${formatBanglaNumber(pctNetMeatVal, 0)}%`;
             document.getElementById('pctBone').textContent = `${formatBanglaNumber(pctBoneVal, 0)}%`;
             document.getElementById('pctOffal').textContent = `${formatBanglaNumber(pctOffalVal, 0)}%`;
@@ -832,7 +1133,7 @@
             // Adjust position of absolute range slider pin marker
             document.getElementById('weightMarker').style.left = `${percentPosition}%`;
 
-            // Reveal result box smoothly using CSS transition properties
+            // Reveal result box smoothly using CSS transitions
             const resCard = document.getElementById('resultCard');
             resCard.classList.remove('hidden');
             setTimeout(() => {
