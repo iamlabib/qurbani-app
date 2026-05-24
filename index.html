@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পশু ওজন পরিমাপক (ষাঁড় ও ছাগল)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Hind Siliguri for beautiful Bengali typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+        /* Custom scrollbar for premium feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #059669;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-emerald-50 via-teal-50 to-emerald-100 min-h-screen text-slate-800 flex flex-col justify-between">
+
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-md shadow-sm border-b border-emerald-100 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-emerald-600 text-white p-2.5 rounded-2xl shadow-md shadow-emerald-200 animate-pulse">
+                    <i class="fa-solid fa-cow text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold text-emerald-800 leading-tight">পশু ওজন পরিমাপক</h1>
+                    <p class="text-xs md:text-sm text-emerald-600 font-medium">ফিতা দিয়ে মেপে সহজে লাইভ ওজন হিসাব করুন</p>
+                </div>
+            </div>
+            <div class="bg-emerald-100/70 border border-emerald-200/50 px-3 py-1.5 rounded-full text-xs text-emerald-800 font-semibold hidden sm:flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                শতভাগ নির্ভুল গাণিতিক সূত্র
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-6xl mx-auto px-4 py-6 md:py-10 flex-grow w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Side: Interactive Calculator -->
+            <div class="lg:col-span-7 bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl shadow-emerald-950/5 border border-white/60 p-6 md:p-8 transition-all">
+                
+                <!-- Animal Type Selection -->
+                <div class="mb-6">
+                    <label class="block text-emerald-900 font-bold text-lg mb-3 text-center md:text-left">১. পশুর ধরন নির্বাচন করুন</label>
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Cow/Bull option -->
+                        <button id="btnCow" type="button" onclick="selectAnimal('cow')" class="relative flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all duration-300 bg-emerald-50/50 border-emerald-500 ring-4 ring-emerald-500/10 scale-[1.02]">
+                            <div class="absolute top-3 right-3 bg-emerald-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow" id="cowCheck">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <span class="text-4xl mb-2 filter drop-shadow">🐂</span>
+                            <span class="font-bold text-lg text-emerald-900">ষাঁড় / গরু (Bull/Cow)</span>
+                        </button>
+                        
+                        <!-- Goat option -->
+                        <button id="btnGoat" type="button" onclick="selectAnimal('goat')" class="relative flex flex-col items-center justify-center p-4 rounded-2xl border-2 border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/30 transition-all duration-300">
+                            <div class="absolute top-3 right-3 bg-emerald-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow hidden" id="goatCheck">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <span class="text-4xl mb-2 filter drop-shadow">🐐</span>
+                            <span class="font-bold text-lg text-slate-700">ছাগল (Goat)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Measurement Units Selection -->
+                <div class="mb-6">
+                    <label class="block text-emerald-900 font-bold text-lg mb-3 text-center md:text-left">২. পরিমাপের একক নির্ধারণ করুন</label>
+                    <div class="bg-slate-100 p-1.5 rounded-xl flex">
+                        <button id="unitCm" onclick="changeUnit('cm')" class="flex-1 py-2 text-sm md:text-base font-bold rounded-lg transition-all text-white bg-emerald-600 shadow-md">সেন্টিমিটার (cm)</button>
+                        <button id="unitInch" onclick="changeUnit('inch')" class="flex-1 py-2 text-sm md:text-base font-bold rounded-lg transition-all text-slate-600 hover:text-emerald-800">ইঞ্চি (inch)</button>
+                        <button id="unitFeet" onclick="changeUnit('feet')" class="flex-1 py-2 text-sm md:text-base font-bold rounded-lg transition-all text-slate-600 hover:text-emerald-800">ফুট (feet)</button>
+                    </div>
+                    <p class="text-xs text-emerald-600 mt-2 text-center md:text-left">💡 একক পরিবর্তন করলে পূর্বের তথ্যগুলো স্বয়ংক্রিয়ভাবে পরিবর্তিত হবে।</p>
+                </div>
+
+                <hr class="border-dashed border-emerald-100 my-6">
+
+                <!-- Input Fields -->
+                <div class="space-y-5">
+                    <label class="block text-emerald-900 font-bold text-lg">৩. সঠিক মাপ দিন</label>
+                    
+                    <!-- Heart Girth Input -->
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label for="inputGirth" class="font-semibold text-slate-700 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                                বুকের পরিধি / হার্ট গার্থ (Heart Girth)
+                            </label>
+                            <span class="text-xs bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded-md" id="girthUnitLabel">সেন্টিমিটার</span>
+                        </div>
+                        <div class="relative">
+                            <input type="number" step="any" id="inputGirth" oninput="clearErrors()" placeholder="বুকের বেষ্টনী লিখুন..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 pr-12 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold" id="girthUnitSymbol">cm</span>
+                        </div>
+                        <p id="errorGirth" class="text-red-500 text-sm font-semibold mt-1 hidden"></p>
+                    </div>
+
+                    <!-- Body Length Input -->
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label for="inputLength" class="font-semibold text-slate-700 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                শরীরের দৈর্ঘ্য (Body Length)
+                            </label>
+                            <span class="text-xs bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded-md" id="lengthUnitLabel">সেন্টিমিটার</span>
+                        </div>
+                        <div class="relative">
+                            <input type="number" step="any" id="inputLength" oninput="clearErrors()" placeholder="কাঁধ থেকে লেজের গোড়া পর্যন্ত..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 pr-12 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white transition-all">
+                            <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold" id="lengthUnitSymbol">cm</span>
+                        </div>
+                        <p id="errorLength" class="text-red-500 text-sm font-semibold mt-1 hidden"></p>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+                    <button onclick="calculateWeight()" class="sm:col-span-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg py-4 px-6 rounded-2xl shadow-lg shadow-emerald-600/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-calculator"></i>
+                        ওজন হিসাব করুন
+                    </button>
+                    <button onclick="resetCalculator()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-lg py-4 px-6 rounded-2xl active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        রিসেট
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- Right Side: Measurement Guide and Tips -->
+            <div class="lg:col-span-5 space-y-6">
+                
+                <!-- Measurement Guide Image Graphic Card -->
+                <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl shadow-emerald-950/5 border border-white/60 p-6">
+                    <h3 class="text-emerald-900 font-bold text-lg mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-magnifying-glass-chart text-emerald-600"></i>
+                        মেপে নেওয়ার সঠিক নিয়মচিত্র
+                    </h3>
+                    
+                    <div class="bg-emerald-50/50 rounded-2xl p-4 border border-emerald-100 flex items-center justify-center min-h-[220px]">
+                        <!-- Real Hereford Bull Image Guide -->
+                        <div id="cowSvgContainer" class="w-full relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-emerald-200/50 bg-slate-100">
+                            <!-- USDA Hereford Bull Side View Direct Image link from Wikimedia -->
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/f/f3/Hereford_bull_large.jpg" 
+                                 alt="ষাঁড় পরিমাপ নির্দেশিকা" 
+                                 class="w-full h-full object-cover opacity-95" 
+                                 onerror="loadFallbackImage(this, 'cow')">
+                            
+                            <!-- Overlaid indicators -->
+                            <div class="absolute inset-0 bg-black/15"></div>
+                            <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 300">
+                                <!-- Heart Girth (Red Line) -->
+                                <ellipse cx="140" cy="155" rx="16" ry="60" fill="none" stroke="#ef4444" stroke-width="4.5" stroke-dasharray="8,5" />
+                                <text x="140" y="235" fill="#ffffff" font-weight="900" font-size="13" text-anchor="middle" class="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">বুকের পরিধি</text>
+                                
+                                <!-- Body Length (Blue Line) -->
+                                <g>
+                                    <line x1="110" y1="110" x2="315" y2="110" stroke="#2563eb" stroke-width="4.5" stroke-dasharray="8,5" />
+                                    <polygon points="110,110 122,104 122,116" fill="#2563eb" />
+                                    <polygon points="315,110 303,104 303,116" fill="#2563eb" />
+                                    <text x="212" y="95" fill="#ffffff" font-weight="900" font-size="13" text-anchor="middle" class="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">শরীরের দৈর্ঘ্য</text>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <!-- Real White Goat Image Guide -->
+                        <div id="goatSvgContainer" class="w-full relative aspect-[4/3] rounded-2xl overflow-hidden shadow-md border border-emerald-200/50 bg-slate-100 hidden">
+                            <!-- Standard Domestic White Goat Image link from Wikimedia -->
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b2/Hausziege_04.jpg" 
+                                 alt="ছাগল পরিমাপ নির্দেশিকা" 
+                                 class="w-full h-full object-cover opacity-95" 
+                                 onerror="loadFallbackImage(this, 'goat')">
+                            
+                            <!-- Overlaid indicators -->
+                            <div class="absolute inset-0 bg-black/20"></div>
+                            <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 300">
+                                <!-- Heart Girth (Red Line) -->
+                                <ellipse cx="150" cy="150" rx="14" ry="50" fill="none" stroke="#ef4444" stroke-width="4.5" stroke-dasharray="8,5" />
+                                <text x="150" y="220" fill="#ffffff" font-weight="900" font-size="13" text-anchor="middle" class="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">বুকের পরিধি</text>
+                                
+                                <!-- Body Length (Blue Line) -->
+                                <g>
+                                    <line x1="120" y1="115" x2="280" y2="115" stroke="#2563eb" stroke-width="4.5" stroke-dasharray="8,5" />
+                                    <polygon points="120,115 132,109 132,121" fill="#2563eb" />
+                                    <polygon points="280,115 268,109 268,121" fill="#2563eb" />
+                                    <text x="200" y="100" fill="#ffffff" font-weight="900" font-size="13" text-anchor="middle" class="drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">শরীরের দৈর্ঘ্য</text>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accurate Measuring Instructions (Collapsible Tips) -->
+                <div class="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl shadow-emerald-950/5 border border-white/60 overflow-hidden">
+                    <button onclick="toggleTips()" class="w-full text-left p-6 flex justify-between items-center bg-gradient-to-r from-emerald-500/5 to-transparent">
+                        <span class="text-emerald-900 font-bold text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info text-emerald-600"></i>
+                            কিভাবে সঠিক পরিমাপ নিবেন?
+                        </span>
+                        <i id="tipsChevron" class="fa-solid fa-chevron-down text-emerald-600 transition-transform duration-300"></i>
+                    </button>
+                    
+                    <div id="tipsContent" class="px-6 pb-6 space-y-3.5 text-sm md:text-base text-slate-600 hidden">
+                        <div class="flex gap-3 items-start">
+                            <span class="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-xs mt-0.5">১</span>
+                            <p><strong class="text-emerald-900">সমতল স্থান:</strong> পরিমাপ নেওয়ার সময় পশুটিকে অবশ্যই সমতল ও সোজা জায়গায় দাঁড় করাতে হবে।</p>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <span class="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-xs mt-0.5">২</span>
+                            <p><strong class="text-emerald-900">বুকের পরিধি:</strong> সামনের দুই পায়ের ঠিক পিছন দিয়ে ফিতা নিয়ে বুকের চারপাশ পেঁচিয়ে পরিধি বা বেষ্টনী মেপে নিন। ফিতা বেশি টাইট বা ঢিলা করবেন না।</p>
+                        </div>
+                        <div class="flex gap-3 items-start">
+                            <span class="flex-shrink-0 w-6 h-6 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center font-bold text-xs mt-0.5">৩</span>
+                            <p><strong class="text-emerald-900">শরীরের দৈর্ঘ্য:</strong> পশুর কাঁধের হাড় বা জয়েন্ট (Point of shoulder) থেকে শুরু করে নিতম্বের শেষ হাড় বা লেজের গোড়া (Pin bone) পর্যন্ত সোজা মেপে নিন।</p>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-100 p-3 rounded-xl text-amber-800 text-xs flex gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5 flex-shrink-0 text-base"></i>
+                            <span><strong>সতর্কতা:</strong> এটি একটি বৈজ্ঞানিক ও জ্যামিতিক আনুমানিক হিসাব। পশুর গর্ভধারণ, চর্বির আধিক্য অথবা বিশেষ জাতের ক্ষেত্রে ওজন কিছুটা কম-বেশি হতে পারে।</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Live Result Display (Renders Dynamically below) -->
+        <div id="resultCard" class="mt-8 bg-gradient-to-b from-emerald-800 to-emerald-950 text-white rounded-3xl shadow-xl shadow-emerald-950/20 p-6 md:p-8 hidden opacity-0 transition-all duration-500 scale-95 max-w-4xl mx-auto border border-emerald-700/30">
+            <div class="text-center mb-6">
+                <span class="bg-emerald-500/20 text-emerald-300 font-bold px-4 py-1.5 rounded-full text-xs md:text-sm uppercase tracking-wider border border-emerald-500/20 inline-block">হিসাব সম্পন্ন হয়েছে</span>
+                <h3 class="text-2xl md:text-3xl font-black mt-2 text-emerald-100">আনুমানিক লাইভ ওজন</h3>
+            </div>
+
+            <!-- Echo Input measurements -->
+            <div class="bg-emerald-900/50 border border-emerald-800/60 rounded-2xl py-3 px-4 mb-6 text-center text-emerald-200 text-sm md:text-base font-semibold">
+                প্রদত্ত মাপ ➔ 
+                <span id="echoGirth">বুকের পরিধি: --</span> | 
+                <span id="echoLength">শরীরের দৈর্ঘ্য: --</span>
+            </div>
+
+            <!-- Primary Metric Display -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center mb-6">
+                <!-- Main weight in KG -->
+                <div class="bg-white/5 backdrop-blur border border-white/10 p-6 rounded-2xl text-center md:col-span-1">
+                    <p class="text-emerald-300 text-sm font-semibold mb-1">কেজিতে ওজন</p>
+                    <p class="text-3xl md:text-4xl font-extrabold text-white" id="resKg">-- কেজি</p>
+                </div>
+                
+                <!-- Weight in Mond (মণ) -->
+                <div class="bg-white/5 backdrop-blur border border-white/10 p-6 rounded-2xl text-center md:col-span-1">
+                    <p class="text-emerald-300 text-sm font-semibold mb-1">মণে ওজন (১ মণ = ৩৭.৩২ কেজি)</p>
+                    <p class="text-3xl md:text-4xl font-extrabold text-yellow-300" id="resMond">-- মণ</p>
+                </div>
+
+                <!-- Weight in Pounds -->
+                <div class="bg-white/5 backdrop-blur border border-white/10 p-6 rounded-2xl text-center md:col-span-1">
+                    <p class="text-emerald-300 text-sm font-semibold mb-1">পাউন্ডে ওজন (Lbs)</p>
+                    <p class="text-2xl md:text-3xl font-extrabold text-emerald-200" id="resLbs">-- পাউন্ড</p>
+                </div>
+            </div>
+
+            <!-- NEW SECTION: Eatable Meat & Price Estimation (৯০০ টাকা/কেজি) -->
+            <div class="bg-gradient-to-r from-amber-500/15 via-emerald-500/10 to-amber-500/15 border border-amber-500/30 rounded-2xl p-5 mb-6 shadow-lg">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Total Eatable Yield -->
+                    <div class="flex items-center gap-4">
+                        <div class="bg-amber-500 text-slate-950 p-3.5 rounded-2xl shadow-md flex items-center justify-center">
+                            <i class="fa-solid fa-drumstick-bite text-2xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-amber-300 text-xs md:text-sm font-bold flex items-center gap-1.5">
+                                মোট খাওয়ার উপযোগী অংশ (আনুমানিক)
+                                <span class="bg-amber-400/20 text-amber-200 text-[10px] px-1.5 py-0.5 rounded" id="eatablePercentageLabel">৪৫%</span>
+                            </p>
+                            <p class="text-2xl md:text-3xl font-black text-white" id="resEatableKg">-- কেজি</p>
+                            <p class="text-[11px] text-emerald-300/80 leading-tight mt-0.5">মাংস ও কলিজা-মগজ সহ ভোজ্য মোট অংশ</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Market Value Yield at 900 TK/KG -->
+                    <div class="flex items-center gap-4 border-t md:border-t-0 md:border-l border-emerald-800/60 pt-4 md:pt-0 md:pl-6">
+                        <div class="bg-emerald-500 text-slate-950 p-3.5 rounded-2xl shadow-md flex items-center justify-center">
+                            <i class="fa-solid fa-sack-dollar text-2xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-emerald-300 text-xs md:text-sm font-bold">৯০০ টাকা/কেজি দরে আনুমানিক মূল্য</p>
+                            <p class="text-2xl md:text-3xl font-black text-yellow-300" id="resTotalPrice">৳ -- টাকা</p>
+                            <p class="text-[11px] text-emerald-300/80 leading-tight mt-0.5">বর্তমান বাজারমূল্য অনুযায়ী আনুমানিক হিসাব</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Meat Weight Estimation Card Section -->
+            <div class="bg-emerald-900/40 border border-emerald-800/60 rounded-2xl p-5 mb-6">
+                <h4 class="text-yellow-400 font-bold text-lg mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    মাংসের বিস্তারিত আনুমানিক পরিমাণ (Estimated Meat Weight)
+                </h4>
+                
+                <!-- Meat breakdown table -->
+                <div class="divide-y divide-emerald-800/40 text-sm md:text-base">
+                    <div class="flex justify-between py-2.5">
+                        <span class="text-slate-200 font-semibold">কার্কাস ওজন (Carcass Weight)</span>
+                        <span class="text-white font-extrabold" id="resCarcass">-- কেজি</span>
+                    </div>
+                    <div class="flex justify-between py-2.5">
+                        <span class="text-slate-200 font-semibold flex items-center gap-2">
+                            <span class="w-3 h-3 rounded bg-emerald-500 inline-block"></span>
+                            নিট মাংস / হাড়বিহীন (Net Boneless Meat)
+                        </span>
+                        <span class="text-emerald-300 font-extrabold" id="resNetMeat">-- কেজি</span>
+                    </div>
+                    <div class="flex justify-between py-2.5">
+                        <span class="text-slate-200 font-semibold flex items-center gap-2">
+                            <span class="w-3 h-3 rounded bg-amber-600 inline-block"></span>
+                            হাড় (Bone)
+                        </span>
+                        <span class="text-white font-extrabold" id="resBone">-- কেজি</span>
+                    </div>
+                    <div class="flex justify-between py-2.5">
+                        <span class="text-slate-200 font-semibold flex items-center gap-2">
+                            <span class="w-3 h-3 rounded bg-orange-500 inline-block"></span>
+                            ভুঁড়ি / নাড়িভুঁড়ি (Offal & Organs)
+                        </span>
+                        <span class="text-white font-extrabold" id="resOffal">-- কেজি</span>
+                    </div>
+                    <div class="flex justify-between py-2.5">
+                        <span class="text-slate-200 font-semibold flex items-center gap-2">
+                            <span class="w-3 h-3 rounded bg-slate-400 inline-block"></span>
+                            চামড়া ও বর্জ্য (Skin & Waste)
+                        </span>
+                        <span class="text-white font-extrabold" id="resSkin">-- কেজি</span>
+                    </div>
+                </div>
+
+                <!-- Visual Stacked Bar -->
+                <div class="mt-6">
+                    <p class="text-xs text-emerald-300 font-bold mb-2">অনুপাত চিত্র (Visual Breakdown Bar):</p>
+                    <div class="flex h-4 overflow-hidden rounded-full bg-emerald-950/80 border border-emerald-800/40">
+                        <div id="barNetMeat" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500 transition-all duration-1000" style="width: 0%"></div>
+                        <div id="barBone" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-amber-600 transition-all duration-1000" style="width: 0%"></div>
+                        <div id="barOffal" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-orange-500 transition-all duration-1000" style="width: 0%"></div>
+                        <div id="barSkin" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-slate-400 transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                    <div class="flex flex-wrap gap-x-4 gap-y-2 mt-3 text-xs text-slate-300">
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded bg-emerald-500 inline-block"></span>
+                            নিট মাংস (<span id="pctNetMeat">০%</span>)
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded bg-amber-600 inline-block"></span>
+                            হাড় (<span id="pctBone">০%</span>)
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded bg-orange-500 inline-block"></span>
+                            ভুঁড়ি (<span id="pctOffal">০%</span>)
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded bg-slate-400 inline-block"></span>
+                            চামড়া ও বর্জ্য (<span id="pctSkin">০%</span>)
+                        </span>
+                    </div>
+                </div>
+
+                <p class="text-[11px] text-emerald-400/80 mt-4 leading-relaxed italic">
+                    * এটি একটি আনুমানিক হিসাব। প্রকৃত মাংসের পরিমাণ পশুর বয়স, জাত ও শারীরিক অবস্থার উপর নির্ভর করে।
+                </p>
+            </div>
+
+            <!-- Weight Category & Visual Meter -->
+            <div class="bg-emerald-900/40 border border-emerald-800/80 rounded-2xl p-5">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-emerald-300 font-bold text-sm md:text-base">পশুর স্বাস্থ্য বিভাগ</span>
+                    <span class="bg-white text-emerald-900 font-black px-4 py-1 rounded-full text-xs md:text-sm" id="resCategory">সাধারণ</span>
+                </div>
+
+                <!-- Custom Range Meter -->
+                <div class="relative pt-4 pb-2">
+                    <div class="flex h-3 mb-4 overflow-hidden text-xs bg-emerald-950 rounded-full">
+                        <div class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-amber-400 w-[30%] border-r border-emerald-900/40"></div>
+                        <div class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-emerald-500 w-[40%] border-r border-emerald-900/40"></div>
+                        <div class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500 w-[30%]"></div>
+                    </div>
+                    
+                    <!-- Dynamic Pin Marker on Progress Slider -->
+                    <div id="weightMarker" class="absolute top-[10px] left-[0%] transition-all duration-1000 -translate-x-1/2 flex flex-col items-center">
+                        <i class="fa-solid fa-location-pin text-yellow-300 text-xl filter drop-shadow"></i>
+                    </div>
+
+                    <div class="flex justify-between text-xs font-bold text-emerald-300/80">
+                        <span>ছোট (Small)</span>
+                        <span>মাঝারি (Medium)</span>
+                        <span>বড় (Large)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 text-center text-xs text-emerald-400/80">
+                ⚠️ পরিমাপকৃত ওজন আনুমানিক। মাংসের প্রকৃত ওজন পশুর জাত ও হাড়ের ওজনের ওপর ভিত্তি করে প্রায় ৫৫% থেকে ৬৫% পর্যন্ত হয়ে থাকে।
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-emerald-900 text-emerald-300/80 py-6 border-t border-emerald-800 text-center text-xs md:text-sm mt-10">
+        <div class="max-w-6xl mx-auto px-4 space-y-2">
+            <p class="font-bold text-emerald-200">© ২০২৬ পশু ওজন পরিমাপক। সকল স্বত্ব সংরক্ষিত।</p>
+            <p>ডিজিটাল প্রযুক্তির ছোঁয়ায় দেশের কৃষি খাত হোক আরো সমৃদ্ধ ও স্মার্ট।</p>
+        </div>
+    </footer>
+
+    <!-- Sound and logic controls (Embedded JS) -->
+    <script>
+        // System variables & states
+        let selectedAnimalType = 'cow'; // default is cow
+        let currentUnit = 'cm'; // default unit is cm
+
+        // Translation tables for numbers
+        const banglaDigits = {
+            '0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯',
+            '.': '.', ',': ','
+        };
+        
+        // Convert regular numbers/strings to Bengali script numerals
+        function convertToBanglaNumerals(num) {
+            if (num === null || num === undefined) return '';
+            return num.toString().split('').map(char => banglaDigits[char] || char).join('');
+        }
+
+        // Format and convert floating numbers into elegant Bengali text representation
+        function formatBanglaNumber(value, decimals = 2) {
+            if (isNaN(value) || value === null) return '';
+            const roundedVal = Number(value).toFixed(decimals);
+            return convertToBanglaNumerals(roundedVal);
+        }
+
+        // Format price with English-style thousands separator, then map to Bengali numerals
+        function formatBanglaPrice(value) {
+            if (isNaN(value) || value === null) return '';
+            const formattedEnglish = Math.round(value).toLocaleString('en-US'); // e.g., "125,000"
+            return convertToBanglaNumerals(formattedEnglish);
+        }
+
+        // Safe Fallback handler if external image loading fails
+        function loadFallbackImage(imgElement, type) {
+            if (type === 'cow') {
+                imgElement.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='100%' height='100%' fill='%23e2e8f0'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%23475569'>ষাঁড় পরিমাপ নির্দেশিকা (সচিত্র)</text></svg>";
+            } else {
+                imgElement.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><rect width='100%' height='100%' fill='%23e2e8f0'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='16' fill='%23475569'>ছাগল পরিমাপ নির্দেশিকা (সচিত্র)</text></svg>";
+            }
+        }
+
+        // Handler for animal tab cards click
+        function selectAnimal(animal) {
+            selectedAnimalType = animal;
+            
+            const btnCow = document.getElementById('btnCow');
+            const btnGoat = document.getElementById('btnGoat');
+            const cowCheck = document.getElementById('cowCheck');
+            const goatCheck = document.getElementById('goatCheck');
+            const cowSvg = document.getElementById('cowSvgContainer');
+            const goatSvg = document.getElementById('goatSvgContainer');
+
+            if (animal === 'cow') {
+                btnCow.className = "relative flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all duration-300 bg-emerald-50/50 border-emerald-500 ring-4 ring-emerald-500/10 scale-[1.02]";
+                btnGoat.className = "relative flex flex-col items-center justify-center p-4 rounded-2xl border-2 border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/30 transition-all duration-300";
+                cowCheck.classList.remove('hidden');
+                goatCheck.classList.add('hidden');
+                cowSvg.classList.remove('hidden');
+                goatSvg.classList.add('hidden');
+            } else {
+                btnGoat.className = "relative flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all duration-300 bg-emerald-50/50 border-emerald-500 ring-4 ring-emerald-500/10 scale-[1.02]";
+                btnCow.className = "relative flex flex-col items-center justify-center p-4 rounded-2xl border-2 border-slate-200 hover:border-emerald-300 hover:bg-emerald-50/30 transition-all duration-300";
+                goatCheck.classList.remove('hidden');
+                cowCheck.classList.add('hidden');
+                goatSvg.classList.remove('hidden');
+                cowSvg.classList.add('hidden');
+            }
+            
+            // Re-calculate live if values are set to ensure instant category/range update
+            const girthInput = document.getElementById('inputGirth').value;
+            const lengthInput = document.getElementById('inputLength').value;
+            if (girthInput && lengthInput) {
+                calculateWeight();
+            }
+        }
+
+        // Dynamic visual update of unit variables and auto-conversion logic
+        function changeUnit(newUnit) {
+            if (currentUnit === newUnit) return;
+
+            const girthInput = document.getElementById('inputGirth');
+            const lengthInput = document.getElementById('inputLength');
+            
+            let girthVal = parseFloat(girthInput.value);
+            let lengthVal = parseFloat(lengthInput.value);
+
+            // 1. Convert any current values to the absolute cm scale (base metric)
+            if (!isNaN(girthVal)) {
+                let girthInCm = girthVal;
+                if (currentUnit === 'inch') girthInCm = girthVal * 2.54;
+                else if (currentUnit === 'feet') girthInCm = girthVal * 30.48;
+
+                // 2. Project base cm to the target unit
+                if (newUnit === 'cm') girthInput.value = girthInCm.toFixed(1);
+                else if (newUnit === 'inch') girthInput.value = (girthInCm / 2.54).toFixed(1);
+                else if (newUnit === 'feet') girthInput.value = (girthInCm / 30.48).toFixed(2);
+            }
+
+            if (!isNaN(lengthVal)) {
+                let lengthInCm = lengthVal;
+                if (currentUnit === 'inch') lengthInCm = lengthVal * 2.54;
+                else if (currentUnit === 'feet') lengthInCm = lengthVal * 30.48;
+
+                if (newUnit === 'cm') lengthInput.value = lengthInCm.toFixed(1);
+                else if (newUnit === 'inch') lengthInput.value = (lengthInCm / 2.54).toFixed(1);
+                else if (newUnit === 'feet') lengthInput.value = (lengthInCm / 30.48).toFixed(2);
+            }
+
+            // Update UI components state triggers
+            currentUnit = newUnit;
+
+            // Update UI texts & labels dynamically
+            const unitCmBtn = document.getElementById('unitCm');
+            const unitInchBtn = document.getElementById('unitInch');
+            const unitFeetBtn = document.getElementById('unitFeet');
+
+            // Reset buttons visual state
+            [unitCmBtn, unitInchBtn, unitFeetBtn].forEach(btn => {
+                btn.className = "flex-1 py-2 text-sm md:text-base font-bold rounded-lg transition-all text-slate-600 hover:text-emerald-800";
+            });
+
+            // Set active button
+            if (newUnit === 'cm') {
+                unitCmBtn.className = "flex-1 py-2 text-sm md:text-base font-bold rounded-lg transition-all text-white bg-emerald-600 shadow-md";
+                updateLabels("সেন্টিমিটার", "cm");
+            } else if (newUnit === 'inch') {
+                unitInchBtn.className = "flex-1 py-2 text-sm md:text-base font-bold rounded-lg transition-all text-white bg-emerald-600 shadow-md";
+                updateLabels("ইঞ্চি", "inch");
+            } else if (newUnit === 'feet') {
+                unitFeetBtn.className = "flex-1 py-2 text-sm md:text-base font-bold rounded-lg transition-all text-white bg-emerald-600 shadow-md";
+                updateLabels("ফুট", "feet");
+            }
+
+            // If a valid output is visible, run computation immediately for updated visual outputs in chosen unit
+            const resCard = document.getElementById('resultCard');
+            if (!resCard.classList.contains('hidden')) {
+                calculateWeight();
+            }
+        }
+
+        // Helper update tags next to measurement inputs
+        function updateLabels(label, symbol) {
+            document.getElementById('girthUnitLabel').textContent = label;
+            document.getElementById('lengthUnitLabel').textContent = label;
+            document.getElementById('girthUnitSymbol').textContent = symbol;
+            document.getElementById('lengthUnitSymbol').textContent = symbol;
+        }
+
+        // Collapsible informational tips panel toggle
+        function toggleTips() {
+            const tipsContent = document.getElementById('tipsContent');
+            const tipsChevron = document.getElementById('tipsChevron');
+            if (tipsContent.classList.contains('hidden')) {
+                tipsContent.classList.remove('hidden');
+                tipsChevron.style.transform = "rotate(180deg)";
+            } else {
+                tipsContent.classList.add('hidden');
+                tipsChevron.style.transform = "rotate(0deg)";
+            }
+        }
+
+        // Clear dynamic display errors on input focus change
+        function clearErrors() {
+            const errG = document.getElementById('errorGirth');
+            const errL = document.getElementById('errorLength');
+            errG.classList.add('hidden');
+            errL.classList.add('hidden');
+        }
+
+        // Reset the form controls and dynamic components smoothly
+        function resetCalculator() {
+            document.getElementById('inputGirth').value = '';
+            document.getElementById('inputLength').value = '';
+            clearErrors();
+            
+            const resCard = document.getElementById('resultCard');
+            resCard.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                resCard.classList.add('hidden');
+            }, 300);
+        }
+
+        // Weight Estimation core functionality
+        function calculateWeight() {
+            const girthInput = document.getElementById('inputGirth');
+            const lengthInput = document.getElementById('inputLength');
+            
+            const errGirth = document.getElementById('errorGirth');
+            const errLength = document.getElementById('errorLength');
+
+            clearErrors();
+
+            let rawGirth = parseFloat(girthInput.value);
+            let rawLength = parseFloat(lengthInput.value);
+
+            let hasErrors = false;
+
+            // Empty check validation
+            if (isNaN(rawGirth)) {
+                errGirth.textContent = "মাপ দিতে ভুলবেন না";
+                errGirth.classList.remove('hidden');
+                hasErrors = true;
+            } else if (rawGirth <= 0) {
+                errGirth.textContent = "সঠিক মাপ দিন";
+                errGirth.classList.remove('hidden');
+                hasErrors = true;
+            }
+
+            if (isNaN(rawLength)) {
+                errLength.textContent = "মাপ দিতে ভুলবেন না";
+                errLength.classList.remove('hidden');
+                hasErrors = true;
+            } else if (rawLength <= 0) {
+                errLength.textContent = "সঠিক মাপ দিন";
+                errLength.classList.remove('hidden');
+                hasErrors = true;
+            }
+
+            if (hasErrors) return;
+
+            // Absolute base conversions internally to metric scale (cm)
+            let girthCm = rawGirth;
+            let lengthCm = rawLength;
+
+            if (currentUnit === 'inch') {
+                girthCm = rawGirth * 2.54;
+                lengthCm = rawLength * 2.54;
+            } else if (currentUnit === 'feet') {
+                girthCm = rawGirth * 30.48;
+                lengthCm = rawLength * 30.48;
+            }
+
+            // Realistic bounds check limits (to prevent garbage computations)
+            let realistic = true;
+            if (selectedAnimalType === 'cow') {
+                // Cow limit range rules
+                if (girthCm < 70 || girthCm > 320) {
+                    errGirth.textContent = "মাপটি সীমার বাইরে, আবার চেক করুন (৭০ - ৩২০ সেমি)";
+                    errGirth.classList.remove('hidden');
+                    realistic = false;
+                }
+                if (lengthCm < 60 || lengthCm > 260) {
+                    errLength.textContent = "মাপটি সীমার বাইরে, আবার চেক করুন (৬০ - ২৬০ সেমি)";
+                    errLength.classList.remove('hidden');
+                    realistic = false;
+                }
+            } else {
+                // Goat limit range rules
+                if (girthCm < 25 || girthCm > 140) {
+                    errGirth.textContent = "মাপটি সীমার বাইরে, আবার চেক করুন (২৫ - ১৪০ সেমি)";
+                    errGirth.classList.remove('hidden');
+                    realistic = false;
+                }
+                if (lengthCm < 20 || lengthCm > 120) {
+                    errLength.textContent = "মাপটি সীমার বাইরে, আবার চেক করুন (২০ - ১২০ সেমি)";
+                    errLength.classList.remove('hidden');
+                    realistic = false;
+                }
+            }
+
+            if (!realistic) return;
+
+            // Running internal scientific livestock equation
+            let weightKg = 0;
+            if (selectedAnimalType === 'cow') {
+                weightKg = (Math.pow(girthCm, 2) * lengthCm) / 10840;
+            } else {
+                weightKg = (Math.pow(girthCm, 2) * lengthCm) / 12000;
+            }
+
+            // Secondary measurement metrics conversions
+            const weightMond = weightKg / 37.32;
+            const weightLbs = weightKg * 2.205;
+
+            // 1. New calculations: Total Eatable portion & Market Price (900 Taka per KG)
+            let eatablePercentage = 0;
+            let eatableKg = 0;
+            
+            if (selectedAnimalType === 'cow') {
+                // Cow eatable yield (Meat + edible organs) is approximately 45% of total live weight
+                eatablePercentage = 45;
+                eatableKg = weightKg * 0.45;
+            } else {
+                // Goat eatable yield is approximately 42% of total live weight
+                eatablePercentage = 42;
+                eatableKg = weightKg * 0.42;
+            }
+            const approxPrice = eatableKg * 900;
+
+            // Meat Estimation detailed calculations
+            let carcassWeight = 0;
+            let netMeatWeight = 0;
+            let boneWeight = 0;
+            let offalWeight = 0;
+            let skinWeight = 0;
+
+            let pctNetMeatVal = 0;
+            let pctBoneVal = 0;
+            let pctOffalVal = 0;
+            let pctSkinVal = 0;
+
+            if (selectedAnimalType === 'cow') {
+                carcassWeight = weightKg * 0.55;
+                netMeatWeight = weightKg * 0.40;
+                boneWeight = weightKg * 0.13;
+                offalWeight = weightKg * 0.09;
+                skinWeight = weightKg * 0.22;
+
+                pctNetMeatVal = 40;
+                pctBoneVal = 13;
+                pctOffalVal = 9;
+                pctSkinVal = 22;
+            } else { // Goat
+                carcassWeight = weightKg * 0.50;
+                netMeatWeight = weightKg * 0.38;
+                boneWeight = weightKg * 0.09;
+                offalWeight = weightKg * 0.08;
+                skinWeight = weightKg * 0.20;
+
+                pctNetMeatVal = 38;
+                pctBoneVal = 9;
+                pctOffalVal = 8;
+                pctSkinVal = 20;
+            }
+
+            // Health Status categorization thresholds
+            let category = "";
+            let percentPosition = 0; // Pointer placement algorithm position
+
+            if (selectedAnimalType === 'cow') {
+                if (weightKg < 150) {
+                    category = "ছোট (Small)";
+                    // Maps 0-150 kg onto range 0% - 30% of bar width
+                    percentPosition = (weightKg / 150) * 30;
+                } else if (weightKg <= 300) {
+                    category = "মাঝারি (Medium)";
+                    // Maps 150-300 kg onto range 30% - 70% of bar width
+                    percentPosition = 30 + ((weightKg - 150) / 150) * 40;
+                } else {
+                    category = "বড় (Large)";
+                    // Maps 300-500 kg onto range 70% - 100% of bar width
+                    percentPosition = 70 + ((weightKg - 300) / 200) * 30;
+                }
+            } else { // Goat thresholds
+                if (weightKg < 15) {
+                    category = "ছোট (Small)";
+                    percentPosition = (weightKg / 15) * 30;
+                } else if (weightKg <= 35) {
+                    category = "মাঝারি (Medium)";
+                    percentPosition = 30 + ((weightKg - 15) / 20) * 40;
+                } else {
+                    category = "বড় (Large)";
+                    percentPosition = 70 + ((weightKg - 35) / 35) * 30;
+                }
+            }
+
+            // Cap marker placement within absolute boundaries [0, 96%] to prevent sliding out of bounds
+            percentPosition = Math.min(Math.max(percentPosition, 2), 96);
+
+            // Display unit conversions string back to user
+            let unitText = "";
+            if (currentUnit === 'cm') unitText = "সেন্টিমিটার";
+            else if (currentUnit === 'inch') unitText = "ইঞ্চি";
+            else if (currentUnit === 'feet') unitText = "ফুট";
+
+            // Push processed measurements into active DOM
+            document.getElementById('echoGirth').textContent = `বুকের পরিধি: ${formatBanglaNumber(rawGirth, 1)} ${unitText}`;
+            document.getElementById('echoLength').textContent = `শরীরের দৈর্ঘ্য: ${formatBanglaNumber(rawLength, 1)} ${unitText}`;
+
+            document.getElementById('resKg').textContent = `${formatBanglaNumber(weightKg, 2)} কেজি`;
+            document.getElementById('resMond').textContent = `${formatBanglaNumber(weightMond, 2)} মণ`;
+            document.getElementById('resLbs').textContent = `${formatBanglaNumber(weightLbs, 2)} পাউন্ড`;
+            document.getElementById('resCategory').textContent = category;
+            
+            // Push Eatable Meat and Price to active DOM
+            document.getElementById('eatablePercentageLabel').textContent = `${convertToBanglaNumerals(eatablePercentage)}%`;
+            document.getElementById('resEatableKg').textContent = `${formatBanglaNumber(eatableKg, 2)} কেজি`;
+            document.getElementById('resTotalPrice').textContent = `৳ ${formatBanglaPrice(approxPrice)} টাকা`;
+
+            // Meat Weight DOM elements update
+            document.getElementById('resCarcass').textContent = `${formatBanglaNumber(carcassWeight, 2)} কেজি`;
+            document.getElementById('resNetMeat').textContent = `${formatBanglaNumber(netMeatWeight, 2)} কেজি`;
+            document.getElementById('resBone').textContent = `${formatBanglaNumber(boneWeight, 2)} কেজি`;
+            document.getElementById('resOffal').textContent = `${formatBanglaNumber(offalWeight, 2)} কেজি`;
+            document.getElementById('resSkin').textContent = `${formatBanglaNumber(skinWeight, 2)} কেজি`;
+
+            // Adjust stacked bar segment widths
+            document.getElementById('barNetMeat').style.width = `${pctNetMeatVal}%`;
+            document.getElementById('barBone').style.width = `${pctBoneVal}%`;
+            document.getElementById('barOffal').style.width = `${pctOffalVal}%`;
+            document.getElementById('barSkin').style.width = `${pctSkinVal}%`;
+
+            // Add text percentages to legend in Bengali
+            document.getElementById('pctNetMeat').textContent = `${formatBanglaNumber(pctNetMeatVal, 0)}%`;
+            document.getElementById('pctBone').textContent = `${formatBanglaNumber(pctBoneVal, 0)}%`;
+            document.getElementById('pctOffal').textContent = `${formatBanglaNumber(pctOffalVal, 0)}%`;
+            document.getElementById('pctSkin').textContent = `${formatBanglaNumber(pctSkinVal, 0)}%`;
+
+            // Adjust position of absolute range slider pin marker
+            document.getElementById('weightMarker').style.left = `${percentPosition}%`;
+
+            // Reveal result box smoothly using CSS transition properties
+            const resCard = document.getElementById('resultCard');
+            resCard.classList.remove('hidden');
+            setTimeout(() => {
+                resCard.classList.remove('opacity-0', 'scale-95');
+                resCard.classList.add('opacity-100', 'scale-100');
+                
+                // Smooth scroll view focus directly into dynamic result container
+                resCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 50);
+        }
+    </script>
+</body>
+</html>
